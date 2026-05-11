@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
 import { getInfoSession } from '../../services/sessionService';
 import { logout } from '../../services/authService';
-import { useToast } from '../../services/toastService';
+import { useToast } from '../../services/toastService.jsx';
 import './Dashboard.css';
 
 export default function Dashboard() {

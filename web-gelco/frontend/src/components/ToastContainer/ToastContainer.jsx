@@ -1,4 +1,4 @@
-import { useToast } from '../../services/toastService';
+import { useToast } from '../../services/toastService.jsx';
 import './ToastContainer.css';
 
 export default function ToastContainer() {

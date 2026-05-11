@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login as authLogin, saveToken } from '../../services/authService';
-import { useToast } from '../../services/toastService';
+import { useToast } from '../../services/toastService.jsx';
 import './Login.css';
 
 export default function Login() {

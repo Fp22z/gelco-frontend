@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProductos } from '../../services/productoService';
-import { useToast } from '../../services/toastService';
+import { useToast } from '../../services/toastService.jsx';
 import './GestionProductos.css';
 
 export default function GestionProductos() {

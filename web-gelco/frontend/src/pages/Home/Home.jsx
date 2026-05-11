@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getProductos } from '../../services/productoService';
-import { useToast } from '../../services/toastService';
+import { useToast } from '../../services/toastService.jsx';
 import './Home.css';
 
 export default function Home() {
