@@ -1,0 +1,163 @@
+.gestion-productos {
+  width: 100%;
+}
+
+.gestion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.gestion-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.btn-nuevo-producto {
+  padding: 10px 20px;
+  background-color: #e45272;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-nuevo-producto:hover {
+  background-color: #d93d64;
+}
+
+.loading,
+.error-message,
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: white;
+  border-radius: 8px;
+  color: #666;
+}
+
+.error-message {
+  color: #dc2626;
+  background-color: #fee2e2;
+}
+
+.productos-table-wrapper {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.productos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.productos-table thead {
+  background-color: #f9fafb;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.productos-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.productos-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.productos-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.productos-table td {
+  padding: 12px 16px;
+  color: #333;
+  font-size: 14px;
+}
+
+.productos-table td.nombre {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.productos-table td.descripcion {
+  color: #6b7280;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.productos-table td.precio {
+  font-weight: 600;
+  color: #e45272;
+}
+
+.productos-table td.stock {
+  text-align: center;
+}
+
+.productos-table td.categoria {
+  color: #6b7280;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.activo {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status.inactivo {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+@media (max-width: 768px) {
+  .gestion-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gestion-header h1 {
+    font-size: 20px;
+  }
+
+  .btn-nuevo-producto {
+    width: 100%;
+  }
+
+  .productos-table {
+    font-size: 12px;
+  }
+
+  .productos-table th,
+  .productos-table td {
+    padding: 8px 12px;
+  }
+
+  .productos-table td.descripcion {
+    display: none;
+  }
+}

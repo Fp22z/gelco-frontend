@@ -1,15 +1,37 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { login as authLogin, saveToken } from '../../services/authService';
+import { useToast } from '../../services/toastService';
 import './Login.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { show: showToast } = useToast();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login:', email, password);
+    
+    if (!email || !password) {
+      showToast('Por favor completa todos los campos', 'warning');
+      return;
+    }
+
+    setLoading(true);
+    
+    try {
+      const response = await authLogin({ email, password });
+      saveToken(response.token);
+      showToast('Ingreso exitoso', 'success');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+      showToast('Correo o contraseña incorrectos', 'danger');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,8 +77,8 @@ export default function Login() {
               />
             </div>
 
-            <button type="submit" className="btn-login">
-              Ingresar al Sistema
+            <button type="submit" className="btn-login" disabled={loading}>
+              {loading ? 'Ingresando...' : 'Ingresar al Sistema'}
             </button>
           </form>
 

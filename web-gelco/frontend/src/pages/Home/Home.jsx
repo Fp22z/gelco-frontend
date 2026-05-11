@@ -1,13 +1,30 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getProductos } from '../../services/api';
+import { getProductos } from '../../services/productoService';
+import { useToast } from '../../services/toastService';
 import './Home.css';
 
 export default function Home() {
   const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { show: showToast } = useToast();
 
   useEffect(() => {
-    getProductos().then(setProductos);
+    const fetchProductos = async () => {
+      try {
+        setLoading(true);
+        const data = await getProductos();
+        setProductos(data);
+      } catch (error) {
+        console.error('Error fetching productos:', error);
+        // Silently fail for home page - products section is optional
+        setProductos([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductos();
   }, []);
 
   return (
@@ -81,8 +98,10 @@ export default function Home() {
       <section className="services">
         <h2 style={{ textAlign: 'center' }}>Productos disponibles</h2>
 
-        {productos.length === 0 ? (
+        {loading ? (
           <p style={{ textAlign: 'center' }}>Cargando productos...</p>
+        ) : productos.length === 0 ? (
+          <p style={{ textAlign: 'center' }}>No hay productos disponibles en este momento</p>
         ) : (
           productos.map(p => (
             <article key={p.id} className="service-card">
