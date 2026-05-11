@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getProductos } from '../../services/productoService';
+import { getProductosPublic } from '../../services/productoService';
 import { useToast } from '../../services/toastService.jsx';
 import './Home.css';
 
@@ -13,7 +13,7 @@ export default function Home() {
     const fetchProductos = async () => {
       try {
         setLoading(true);
-        const data = await getProductos();
+        const data = await getProductosPublic();
         setProductos(data);
       } catch (error) {
         console.error('Error fetching productos:', error);

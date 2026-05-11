@@ -2,6 +2,26 @@ import { environment } from '../environments/environment';
 import { getToken } from './authService';
 
 /**
+ * Get all productos without authentication (public endpoint)
+ * Used for the public home page
+ * @returns {Promise<Array>} Array of productos
+ */
+export const getProductosPublic = async () => {
+  const response = await fetch(`${environment.url}/productos`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch productos');
+  }
+
+  return response.json();
+};
+
+/**
  * Get all productos with authentication
  * @returns {Promise<Array>} Array of productos
  */
