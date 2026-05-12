@@ -3,7 +3,7 @@
  * @property {string} email - User email
  * @property {number} userId - User ID
  * @property {string} nombre - User full name
- * @property {string} perfil - User role (ADMIN, CONSULTORA, SUPERVISOR)
+ * @property {string} perfil - User role (ADMIN, CONSULTORA, DISTRIBUIDOR)
  */
 
 /**

@@ -32,40 +32,46 @@ export default function Home() {
 
       {/* NAVBAR */}
       <nav className="navbar">
-        <div className="logo-container">
-          <img src="/assets/logo-empresa.png" alt="Logo GELCO" className="logo" />
-          <span className="brand-name">Ventas por Catálogo Perú</span>
+        <div className="navbar-left">
+          <img src="/assets/logo-empresa.png" alt="Logo GELCO" className="navbar-logo" />
+          <div className="navbar-brand">
+            <div className="lotus-icon">🪷</div>
+            <span>GELCO</span>
+          </div>
         </div>
-        <div className="auth-buttons">
-          <Link to="/login" className="btn-nav btn-ini">Iniciar Sesión</Link>
-          <a href="#" className="btn-nav btn-reg">Regístrate</a>
+        <div className="navbar-right">
+          <Link to="/login" className="btn-login">Iniciar Sesión</Link>
+          <a href="#" className="btn-register">Regístrate</a>
         </div>
       </nav>
 
       {/* HERO */}
       <header className="hero">
-        <div className="hero-content">
+        <div className="hero-text">
           <h1>Gestiona tus ventas, pedidos y distribución</h1>
           <p>La plataforma integral para consultoras modernas en todo el Perú.</p>
+        </div>
+        <div className="hero-image">
+          <img src="/assets/img-fondo.jpg" alt="Hero" />
         </div>
       </header>
 
       {/* SERVICIOS */}
-      <section className="services">
-        <article className="service-card">
-          <img src="/assets/control-ventas.png" alt="Control de Ventas" />
+      <section className="services-icons">
+        <article className="service-icon-card">
+          <div className="service-icon">📊</div>
           <h3>Control de Ventas</h3>
         </article>
-        <article className="service-card">
-          <img src="/assets/gestion-consultoras.png" alt="Gestión de Consultoras" />
+        <article className="service-icon-card">
+          <div className="service-icon">👥</div>
           <h3>Gestión de Consultoras</h3>
         </article>
-        <article className="service-card">
-          <img src="/assets/seguimiento-pedidos.png" alt="Seguimiento de Pedidos" />
+        <article className="service-icon-card">
+          <div className="service-icon">📦</div>
           <h3>Seguimiento de Pedidos</h3>
         </article>
-        <article className="service-card">
-          <img src="/assets/control-inventario.png" alt="Control de Inventario" />
+        <article className="service-icon-card">
+          <div className="service-icon">📚</div>
           <h3>Control de Inventario</h3>
         </article>
       </section>
@@ -81,36 +87,38 @@ export default function Home() {
       {/* CARACTERÍSTICAS */}
       <section className="characteristics">
         <article className="characteristic-card">
-          <img src="/assets/facil.png" alt="Fácil de usar" />
+          <div className="char-icon">⚡</div>
           <h3>Fácil de usar y accesible</h3>
         </article>
         <article className="characteristic-card">
-          <img src="/assets/optimiza.png" alt="Optimiza ganancias" />
+          <div className="char-icon">💰</div>
           <h3>Optimiza tus ganancias</h3>
         </article>
         <article className="characteristic-card">
-          <img src="/assets/soporte.png" alt="Soporte 24/7" />
+          <div className="char-icon">🎧</div>
           <h3>Soporte y asistencia 24/7</h3>
         </article>
       </section>
 
-      {/* PRODUCTOS DESDE BD */}
-      <section className="services">
-        <h2 style={{ textAlign: 'center' }}>Productos disponibles</h2>
+      {/* PRODUCTOS DISPONIBLES */}
+      <section className="products-section">
+        <h2>Productos disponibles</h2>
 
-        {loading ? (
-          <p style={{ textAlign: 'center' }}>Cargando productos...</p>
-        ) : productos.length === 0 ? (
-          <p style={{ textAlign: 'center' }}>No hay productos disponibles en este momento</p>
-        ) : (
-          productos.map(p => (
-            <article key={p.id} className="service-card">
-              <h3>{p.nombre}</h3>
-              <p>S/. {p.precio}</p>
-              <p>Stock: {p.stock}</p>
-            </article>
-          ))
-        )}
+        <div className="products-grid">
+          {loading ? (
+            <p className="loading-text">Cargando productos...</p>
+          ) : productos.length === 0 ? (
+            <p className="loading-text">No hay productos disponibles en este momento</p>
+          ) : (
+            productos.map(p => (
+              <article key={p.id} className="product-card">
+                <h3>{p.nombre}</h3>
+                <p className="product-price">S/. {p.precio}</p>
+                <p className="product-stock">Stock: {p.stock}</p>
+              </article>
+            ))
+          )}
+        </div>
       </section>
 
       {/* FOOTER */}

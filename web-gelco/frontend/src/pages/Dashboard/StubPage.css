@@ -1,0 +1,40 @@
+:root {
+  --bg-cream: #FDF6F0;
+  --primary-salmon: #E8956D;
+  --white: #ffffff;
+  --dark-text: #1f2937;
+  --light-gray: #6b7280;
+}
+
+.stub-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.stub-content {
+  text-align: center;
+  padding: 60px;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.stub-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.stub-content h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--dark-text);
+  margin: 0 0 8px 0;
+}
+
+.stub-content p {
+  font-size: 16px;
+  color: var(--light-gray);
+  margin: 0;
+}

@@ -46,7 +46,10 @@ export default function Login() {
       <div className="login-form-section">
         <div className="form-content">
 
-          <img src="/assets/logo-empresa.png" alt="Logo GELCO" className="logo" />
+          <div className="login-header">
+            <span className="lotus-icon-login">🪷</span>
+            <img src="/assets/logo-empresa.png" alt="Logo GELCO" className="logo" />
+          </div>
           <h1>¡Bienvenid@!</h1>
           <p className="login-subtitle">
             Gestiona tus ventas, capacitaciones y pedidos en un solo lugar.

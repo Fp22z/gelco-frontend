@@ -1,0 +1,183 @@
+:root {
+  --bg-cream: #FDF6F0;
+  --primary-salmon: #E8956D;
+  --secondary-pink: #C94F7C;
+  --white: #ffffff;
+  --dark-text: #1f2937;
+  --light-gray: #6b7280;
+}
+
+.dashboard-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ── KPI SECTION ── */
+.kpi-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.kpi-card {
+  background: var(--white);
+  padding: 24px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-icon {
+  font-size: 40px;
+  flex-shrink: 0;
+}
+
+.kpi-content {
+  flex: 1;
+}
+
+.kpi-label {
+  font-size: 13px;
+  color: var(--light-gray);
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-salmon);
+  margin: 0;
+}
+
+/* ── CONTENT GRID ── */
+.admin-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+/* ── CHART SECTION ── */
+.chart-section {
+  background: var(--white);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.chart-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark-text);
+  margin: 0 0 24px 0;
+}
+
+.chart-container {
+  width: 100%;
+  height: 300px;
+}
+
+/* ── TOP CONSULTORAS SECTION ── */
+.top-consultoras-section {
+  background: var(--white);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.top-consultoras-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark-text);
+  margin: 0 0 20px 0;
+}
+
+.consultoras-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.consultora-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f9fafb;
+  transition: background 0.3s ease;
+}
+
+.consultora-item:hover {
+  background: #f3f4f6;
+}
+
+.consultora-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: 600;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.consultora-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.consultora-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark-text);
+  margin: 0;
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.consultora-amount {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-salmon);
+  margin: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .kpi-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .kpi-section {
+    grid-template-columns: 1fr;
+  }
+}
