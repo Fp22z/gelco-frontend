@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './DashboardAdmin.css';
 
 export default function DashboardAdmin() {
@@ -64,15 +63,38 @@ export default function DashboardAdmin() {
         <section className="chart-section">
           <h3>Ventas en los últimos 6 meses</h3>
           <div className="chart-container">
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value) => `S/. ${value.toLocaleString()}`} />
-                <Bar dataKey="sales" fill="#E8956D" radius={[8, 8, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="css-bar-chart">
+              <div className="chart-y-axis">
+                <div className="y-axis-label">S/. 75k</div>
+                <div className="y-axis-label">S/. 50k</div>
+                <div className="y-axis-label">S/. 25k</div>
+                <div className="y-axis-label">S/. 0</div>
+              </div>
+              <div className="chart-bars-wrapper">
+                <div className="chart-grid-lines">
+                  <div className="grid-line"></div>
+                  <div className="grid-line"></div>
+                  <div className="grid-line"></div>
+                  <div className="grid-line"></div>
+                </div>
+                <div className="chart-bars">
+                  {chartData.map((data) => {
+                    const maxValue = 75000;
+                    const heightPercent = (data.sales / maxValue) * 100;
+                    return (
+                      <div key={data.month} className="bar-group">
+                        <div
+                          className="bar"
+                          style={{ height: `${heightPercent}%` }}
+                          title={`${data.month}: S/. ${data.sales.toLocaleString()}`}
+                        ></div>
+                        <p className="bar-label">{data.month}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
