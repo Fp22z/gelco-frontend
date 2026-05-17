@@ -18,6 +18,7 @@ import Clientes from './pages/Dashboard/Clientes';
 import Capacitaciones from './pages/Dashboard/Capacitaciones';
 import Flota from './pages/Dashboard/Flota';
 import Historial from './pages/Dashboard/Historial';
+import MiPerfil from './pages/MiPerfil/MiPerfil';
 
 function RoleRoute({ allowedRoles }) {
   const session = getInfoSession();
@@ -38,6 +39,7 @@ export default function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<DashboardHome />} />
+              <Route path="mi-perfil" element={<MiPerfil />} />
 
               {/* Solo ADMIN */}
               <Route element={<RoleRoute allowedRoles={['ADMIN']} />}>

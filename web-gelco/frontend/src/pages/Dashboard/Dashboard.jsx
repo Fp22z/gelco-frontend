@@ -10,6 +10,7 @@ export default function Dashboard() {
   const location = useLocation();
   const { show: showToast } = useToast();
   const [userInfo, setUserInfo] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
 useEffect(() => {
   const info = getInfoSession();
@@ -102,7 +103,6 @@ useEffect(() => {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="lotus-logo">🪷</div>
           <button className="sidebar-logout" onClick={handleLogout}>
             Cerrar Sesión
           </button>
@@ -112,18 +112,50 @@ useEffect(() => {
       {/* MAIN CONTENT */}
       <div className="dashboard-content">
         {/* TOPBAR */}
-        <header className="dashboard-topbar">
-          <div className="topbar-left">
-            <h2 className="page-title">Bienvenido, {userInfo.nombre}</h2>
-          </div>
-          <div className="topbar-right">
-            <button className="topbar-icon-btn">💬</button>
-            <button className="topbar-icon-btn">🔔</button>
-            <div className="user-avatar" title={userInfo.nombre}>
+      <header className="dashboard-topbar">
+        <div className="topbar-left">
+          <h2 className="page-title">Bienvenido, {userInfo.nombre}</h2>
+        </div>
+        <div className="topbar-right">
+          <button className="topbar-icon-btn">💬</button>
+          <button className="topbar-icon-btn">🔔</button>
+          <div className="avatar-wrapper">
+            <div
+              className="user-avatar"
+              title={userInfo.nombre}
+              onClick={() => setDropdownOpen(o => !o)}
+            >
               {getInitials()}
             </div>
+            <span className="avatar-chevron" onClick={() => setDropdownOpen(o => !o)}>▾</span>
+            {dropdownOpen && (
+              <>
+                <div className="dropdown-backdrop" onClick={() => setDropdownOpen(false)} />
+                <div className="avatar-dropdown">
+                  <div className="dropdown-header">
+                    <div className="dropdown-avatar">{getInitials()}</div>
+                    <div>
+                      <p className="dropdown-name">{userInfo.nombre}</p>
+                      <p className="dropdown-email">{userInfo.email}</p>
+                    </div>
+                  </div>
+                  <hr className="dropdown-divider" />
+                  <button className="dropdown-item" onClick={() => { setDropdownOpen(false); navigate('/dashboard/mi-perfil'); }}>
+                    👤 Mi perfil
+                  </button>
+                  <button className="dropdown-item" onClick={() => setDropdownOpen(false)}>
+                    ⚙️ Configuración
+                  </button>
+                  <hr className="dropdown-divider" />
+                  <button className="dropdown-item dropdown-logout" onClick={handleLogout}>
+                    ↪ Cerrar Sesión
+                  </button>
+                </div>
+              </>
+            )}
           </div>
-        </header>
+        </div>
+      </header>
 
         {/* PAGE CONTENT */}
         <main className="dashboard-main">

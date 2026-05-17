@@ -51,9 +51,6 @@ export default function Home() {
           <h1>Gestiona tus ventas, pedidos y distribución</h1>
           <p>La plataforma integral para consultoras modernas en todo el Perú.</p>
         </div>
-        <div className="hero-image">
-          <img src="/assets/img-fondo.jpg" alt="Hero" />
-        </div>
       </header>
 
       {/* SERVICIOS */}

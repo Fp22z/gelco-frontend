@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { login as authLogin, saveToken } from '../../services/authService';
 import { useToast } from '../../services/toastService.jsx';
 import './Login.css';
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -39,7 +40,7 @@ export default function Login() {
 
       {/* Lado imagen */}
       <div className="login-image">
-        <img src="/assets/img-fondo.jpg" alt="Ventas por Catálogo" />
+        <img src="/assets/img-fondo-login.png" alt="Ventas por Catálogo" />
       </div>
 
       {/* Lado formulario */}
@@ -47,7 +48,6 @@ export default function Login() {
         <div className="form-content">
 
           <div className="login-header">
-            <span className="lotus-icon-login">🪷</span>
             <img src="/assets/logo-empresa.png" alt="Logo GELCO" className="logo" />
           </div>
           <h1>¡Bienvenid@!</h1>
@@ -90,6 +90,7 @@ export default function Login() {
             <p className="register-text">
               ¿No eres consultora? <a href="#">Regístrate aquí</a>
             </p>
+            <Link to="/" className="btn-back">← Atrás</Link>
           </div>
 
         </div>
