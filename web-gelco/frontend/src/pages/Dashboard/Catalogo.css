@@ -1,0 +1,737 @@
+:root {
+  --bg-cream: #FDF6F0;
+  --primary-salmon: #E8956D;
+  --secondary-pink: #C94F7C;
+  --white: #ffffff;
+  --dark-text: #1f2937;
+  --light-gray: #6b7280;
+}
+
+/* ── LAYOUT ── */
+.catalogo-page {
+  display: flex;
+  gap: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR FILTROS ── */
+.catalogo-sidebar {
+  width: 200px;
+  min-width: 200px;
+  background: var(--white);
+  border-right: 1px solid #e5e7eb;
+  overflow-y: auto;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filtro-section h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Categorías */
+.categoria-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--dark-text);
+  transition: background 0.15s;
+  margin-bottom: 2px;
+}
+
+.categoria-item:hover {
+  background: #fce7f3;
+}
+
+.categoria-item.active {
+  background: var(--secondary-pink);
+  color: #fff;
+  font-weight: 600;
+}
+
+.categoria-count {
+  font-size: 11px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 10px;
+  padding: 1px 7px;
+}
+
+.categoria-item.active .categoria-count {
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+}
+
+/* Marcas */
+.marca-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--dark-text);
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.marca-item input[type="checkbox"] {
+  accent-color: var(--secondary-pink);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.marca-item label {
+  flex: 1;
+  cursor: pointer;
+}
+
+.marca-count {
+  font-size: 11px;
+  color: var(--light-gray);
+}
+
+/* Líneas de producto */
+.linea-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--dark-text);
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.linea-item input[type="checkbox"] {
+  accent-color: var(--secondary-pink);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* Precio range */
+.precio-range {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.precio-range input[type="range"] {
+  accent-color: var(--primary-salmon);
+  width: 100%;
+}
+
+.precio-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--light-gray);
+}
+
+.precio-max-label {
+  text-align: center;
+  font-size: 12px;
+  color: var(--secondary-pink);
+  font-weight: 600;
+}
+
+/* Disponibilidad */
+.disponibilidad-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--dark-text);
+  cursor: pointer;
+}
+
+.disponibilidad-item input[type="checkbox"] {
+  accent-color: var(--secondary-pink);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* ── MAIN CONTENT ── */
+.catalogo-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── TOPBAR ── */
+.catalogo-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: transparent; 
+  flex-shrink: 0;
+}
+
+.catalogo-search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 9px 16px;
+}
+
+.catalogo-search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  color: var(--dark-text);
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.catalogo-search-box input::placeholder {
+  color: #9ca3af;
+}
+
+.search-icon {
+  color: #9ca3af;
+  font-size: 16px;
+}
+
+.ordenar-label {
+  font-size: 13px;
+  color: var(--light-gray);
+  white-space: nowrap;
+}
+
+.ordenar-select {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--dark-text);
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ── PRODUCT GRID AREA ── */
+.catalogo-grid-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.catalogo-loading,
+.catalogo-error,
+.catalogo-empty {
+  text-align: center;
+  padding: 60px;
+  color: var(--light-gray);
+  font-size: 15px;
+}
+
+.catalogo-error {
+  color: #ef4444;
+}
+
+/* Sección por categoría */
+.catalogo-section {
+  margin-bottom: 28px;
+}
+
+.catalogo-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin: 0 0 14px 0;
+}
+
+.catalogo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+/* ── CHECKBOX REUTILIZABLE (Marcas, Líneas, Ofertas, Disponibilidad) ── */
+.check-filtro-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--dark-text);
+  transition: background 0.15s;
+  margin-bottom: 2px;
+}
+
+.check-filtro-item:hover {
+  background: #fce7f3; /* Mismo hover rosado que las categorías */
+}
+
+.check-filtro-item input[type="checkbox"] {
+  accent-color: var(--secondary-pink);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.check-label {
+  flex: 1; /* Esto empuja el número (count) hacia la derecha */
+  cursor: pointer;
+  user-select: none; /* Evita que el texto se seleccione por accidente al hacer clic */
+}
+
+/* Estilo para el número contador, igual al de las categorías */
+.check-filtro-item .marca-count {
+  font-size: 11px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 10px;
+  padding: 1px 7px;
+  color: var(--dark-text);
+}
+
+/* ── PRODUCT CARD ── */
+.producto-card {
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.15s;
+  cursor: pointer;
+}
+
+.producto-marca {
+  font-size: 11px; /* Más pequeño que el nombre */
+  font-weight: 500;
+  color: var(--light-gray); /* Color gris sutil */
+  margin: 0;
+  text-transform: uppercase; /* Las marcas suelen verse bien en mayúsculas */
+  letter-spacing: 0.04em;
+}
+
+.producto-card:hover {
+  box-shadow: 0 4px 18px rgba(201,79,124,0.12);
+  transform: translateY(-2px);
+}
+
+.producto-card.agotado {
+  opacity: 0.7;
+}
+
+.producto-img-wrap {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  background: #f9fafb;
+  position: relative;
+}
+
+.producto-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.producto-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: #e5e7eb;
+  background: linear-gradient(135deg, #fce7f3 0%, #fdf4ff 100%);
+}
+
+.producto-info {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.producto-nombre {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dark-text);
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* ── BADGES (Campaña / Oferta) FLOTANTES ── */
+.producto-img-wrap {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  background: #f9fafb;
+  position: relative; /* Importante para que los badges floten encima */
+}
+
+.card-badges-container {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 2;
+}
+
+.card-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: fit-content;
+}
+
+.card-badge.campania {
+  background: #fbbf24; /* Amarillo/Dorado vibrante */
+  color: #78350f;
+}
+
+.card-badge.oferta {
+  background: var(--secondary-pink);
+  color: white;
+}
+
+/* ── PRECIOS Y DESCUENTOS ── */
+.producto-precio-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.producto-precio {
+  font-size: 16px; /* Precio final más grande */
+  font-weight: 800;
+  color: var(--secondary-pink);
+  margin: 0;
+}
+
+.precio-original-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.producto-precio-tachado {
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: line-through; /* Esto hace el tachado */
+  color: #9ca3af; /* Gris claro */
+}
+
+.descuento-badge {
+  background: #ef4444; /* Rojo para destacar el ahorro */
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.producto-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+  width: fit-content;
+  margin-top: 2px;
+}
+
+.producto-status.disponible {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.producto-status.pocas-unidades {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.producto-status.agotado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.btn-anadir {
+  width: calc(100% - 24px);
+  margin: 0 12px 12px;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary-salmon);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.15s;
+}
+
+.btn-anadir:hover:not(:disabled) {
+  background: var(--secondary-pink);
+}
+
+.btn-anadir:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* ── FOOTER CHECKBOX ── */
+.catalogo-footer {
+  padding: 12px 20px;
+  border-top: 1px solid #e5e7eb;
+  background: var(--white);
+  flex-shrink: 0;
+}
+
+.solo-stock-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--dark-text);
+  cursor: pointer;
+}
+
+.solo-stock-check input[type="checkbox"] {
+  accent-color: var(--secondary-pink);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* ── MODAL DETALLE ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px); /* Agregado: difumina un poco el fondo para verse más moderno */
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal-detalle {
+  background: var(--white);
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: modalIn 0.2s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* NUEVO: Contenedor para que la imagen y los badges convivan */
+.modal-img-container {
+  width: 100%;
+  height: 220px;
+  position: relative; /* Clave para que los badges floten encima */
+  background: #f9fafb;
+}
+
+.modal-img {
+  width: 100%;
+  height: 100%; /* Modificado para heredar los 220px del padre */
+  object-fit: cover;
+  /* Eliminé el background linear-gradient de aquí porque lo tapará la imagen */
+}
+
+.modal-img-placeholder {
+  width: 100%;
+  height: 100%; /* Modificado para heredar los 220px del padre */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  background: linear-gradient(135deg, #fce7f3 0%, #fdf4ff 100%);
+}
+
+.modal-body {
+  padding: 20px 24px 24px;
+}
+
+.modal-categoria-badge {
+  display: inline-block;
+  background: #fce7f3;
+  color: var(--secondary-pink);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modal-nombre {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin: 0 0 6px 0;
+}
+
+/* NUEVO: Estilo para la marca y línea en el modal */
+.modal-marca-linea {
+  font-size: 13px;
+  color: var(--light-gray);
+  margin: 0 0 14px 0;
+}
+
+.modal-marca-linea strong {
+  color: var(--dark-text);
+}
+
+.modal-descripcion {
+  font-size: 13px;
+  color: var(--light-gray);
+  margin: 0 0 14px 0;
+  line-height: 1.5;
+}
+
+/* MODIFICADO: Ajustado para acomodar la píldora de stock */
+.modal-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f6; /* Separador sutil */
+}
+
+/* NUEVO: Agrupa el precio normal y el tachado */
+.modal-precio-seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-precio {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--secondary-pink);
+  line-height: 1; /* Agregado para que no haya espacios en blanco extra */
+}
+
+/* NUEVO: Contenedor del precio tachado y porcentaje */
+.modal-ahorro-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* NUEVO: El precio original tachado */
+.modal-precio-tachado {
+  font-size: 13px;
+  text-decoration: line-through;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* NUEVO: Píldora de estado (Disponible/Agotado) igual a las tarjetas */
+.modal-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.modal-status-pill.disponible { background: #d1fae5; color: #065f46; }
+.modal-status-pill.pocas-unidades { background: #fef3c7; color: #92400e; }
+.modal-status-pill.agotado { background: #fee2e2; color: #991b1b; }
+
+/* Botones: Se mantienen EXACTAMENTE igual a tu código original */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-modal-cerrar {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--dark-text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.15s;
+}
+
+.btn-modal-cerrar:hover {
+  background: #f9fafb;
+}
+
+.btn-modal-anadir {
+  flex: 2;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary-salmon);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.15s;
+}
+
+.btn-modal-anadir:hover:not(:disabled) {
+  background: var(--secondary-pink);
+}
+
+.btn-modal-anadir:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}

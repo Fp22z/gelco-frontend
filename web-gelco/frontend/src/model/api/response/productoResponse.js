@@ -1,10 +1,4 @@
 /**
- * @typedef {Object} Categoria
- * @property {number} id
- * @property {string} nombre
- */
-
-/**
  * @typedef {Object} ProductoResponse
  * @property {number} id
  * @property {string} nombre
@@ -12,7 +6,8 @@
  * @property {number} precio
  * @property {number} stock
  * @property {boolean} activo
- * @property {Categoria} categoria
+ * @property {number} categoriaId
+ * @property {string} categoriaNombre
  * @property {string} updatedAt
  */
 
@@ -24,17 +19,19 @@
  * @param {number} precio
  * @param {number} stock
  * @param {boolean} activo
- * @param {Categoria} categoria
+ * @param {number} categoriaId
+ * @param {string} categoriaNombre
  * @param {string} updatedAt
  * @returns {ProductoResponse}
  */
-export const createProductoResponse = (id, nombre, descripcion, precio, stock, activo, categoria, updatedAt) => ({
+export const createProductoResponse = (id, nombre, descripcion, precio, stock, activo, categoriaId, categoriaNombre, updatedAt) => ({
   id,
   nombre,
   descripcion,
   precio,
   stock,
   activo,
-  categoria,
+  categoriaId,
+  categoriaNombre,
   updatedAt
 });
