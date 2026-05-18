@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getInfoSession } from '../../services/sessionService';
+import { updateToken } from '../../services/authService';
 import { getConsultoraByUsuario, updateUsuario, updateConsultora } from '../../services/perfilService';
 import './MiPerfil.css';
 
@@ -61,27 +62,40 @@ export default function MiPerfil() {
   };
 
   const handleSave = async () => {
-  setSaving(true);
-  try {
-    await updateUsuario(userInfo.userId, form.nombre);
-    if (userInfo.perfil === 'CONSULTORA' && consultora) {
-      await updateConsultora(consultora.id, {
-        dni: form.dni,
-        telefono: form.telefono,
-        direccion: form.direccion,
-      });
+    setSaving(true);
+    try {
+      // 1. Actualizar usuario y recibir nuevo token
+      const response = await updateUsuario(userInfo.userId, form.nombre);
+      
+      // 2. Guardar el nuevo token (contiene nombre actualizado)
+      if (response.token) {
+        updateToken(response.token);
+      }
+
+      // 3. Actualizar datos de consultora si aplica
+      if (userInfo.perfil === 'CONSULTORA' && consultora) {
+        await updateConsultora(consultora.id, {
+          dni: form.dni,
+          telefono: form.telefono,
+          direccion: form.direccion,
+        });
+      }
+
+      // 4. Mostrar modal de éxito y recargar info de sesión sin reload
+      setSaved(true);
+      
+      // 5. Actualizar el estado local con los nuevos datos
+      const nuevaInfo = getInfoSession();
+      setForm(prev => ({ ...prev, nombre: nuevaInfo.nombre }));
+
+      setTimeout(() => setSaved(false), 2500);
+
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSaving(false);
     }
-    setSaved(true);
-    setTimeout(() => {
-      setSaved(false);
-      window.location.reload();
-    }, 2000);
-  } catch (e) {
-    console.error(e);
-  } finally {
-    setSaving(false);
-  }
-};
+  };
 
   if (loading) return <div className="perfil-loading">Cargando...</div>;
 

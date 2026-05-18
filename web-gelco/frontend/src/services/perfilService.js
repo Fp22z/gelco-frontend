@@ -23,7 +23,7 @@ export const updateUsuario = async (usuarioId, nombre) => {
     body: JSON.stringify({ nombre })
   });
   if (!res.ok) throw new Error('Error al actualizar usuario');
-  return res.json();
+  return res.json(); // ← ya devuelve { id, nombre, email, token }
 };
 
 // Actualizar datos de consultora

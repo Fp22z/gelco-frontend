@@ -77,3 +77,7 @@ export const isLoggedIn = () => {
 export const getToken = () => {
   return localStorage.getItem('user_token');
 };
+
+export const updateToken = (nuevoToken) => {
+  localStorage.setItem('user_token', nuevoToken);
+};

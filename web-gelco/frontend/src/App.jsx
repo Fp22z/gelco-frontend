@@ -14,11 +14,11 @@ import Reportes from './pages/Dashboard/Reportes';
 import GestionNegocio from './pages/Dashboard/GestionNegocio';
 import Catalogo from './pages/Dashboard/Catalogo';
 import Pedidos from './pages/Dashboard/Pedidos';
-import Clientes from './pages/Dashboard/Clientes';
 import Capacitaciones from './pages/Dashboard/Capacitaciones';
 import Flota from './pages/Dashboard/Flota';
 import Historial from './pages/Dashboard/Historial';
 import MiPerfil from './pages/MiPerfil/MiPerfil';
+import MisClientes from './pages/Dashboard/MisClientes';
 
 function RoleRoute({ allowedRoles }) {
   const session = getInfoSession();
@@ -51,10 +51,11 @@ export default function App() {
               </Route>
 
               {/* Solo CONSULTORA */}
+              
               <Route element={<RoleRoute allowedRoles={['CONSULTORA']} />}>
                 <Route path="catalogo" element={<Catalogo />} />
                 <Route path="pedidos" element={<Pedidos />} />
-                <Route path="clientes" element={<Clientes />} />
+                <Route path="clientes" element={<MisClientes />} />
                 <Route path="capacitaciones" element={<Capacitaciones />} />
               </Route>
 

@@ -19,7 +19,7 @@ useEffect(() => {
   } else {
     navigate('/login');
   }
-}, []);
+}, [location.pathname]); // ← re-lee la sesión cada vez que cambia de página
 
   const handleLogout = () => {
     logout();
