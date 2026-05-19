@@ -3,6 +3,7 @@ import { getClientes, deleteCliente } from '../../services/clienteService';
 import { useToast } from '../../services/toastService.jsx';
 import RegistrarCliente from './RegistrarCliente';
 import './MisClientes.css';
+import RecomendarProductos from './RecomendarProductos';
 
 const PREFERENCIAS_COLORES = {
   'Maquillaje juvenil':     { bg: '#FEE2E2', color: '#DC2626', icon: '🏷️' },
@@ -29,6 +30,7 @@ function getAvatarColor(nombre) {
 
 export default function MisClientes() {
   const [clientes, setClientes] = useState([]);
+  const [clienteRecomendar, setClienteRecomendar] = useState(null);
   const [loading, setLoading] = useState(true);
   const [busqueda, setBusqueda] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -193,9 +195,18 @@ export default function MisClientes() {
                 {/* FOOTER */}
                 <div className="card-footer-row">
                   <span>📅 {cliente.totalPedidos ?? 0} pedidos</span>
-                  <button className="btn-eliminar-card" onClick={() => handleEliminar(cliente.id)}>
-                    🗑
-                  </button>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      className="btn-recomendar-card"
+                      onClick={() => setClienteRecomendar(cliente)}
+                      title="Recomendar productos"
+                    >
+                      ⭐
+                    </button>
+                    <button className="btn-eliminar-card" onClick={() => handleEliminar(cliente.id)}>
+                      🗑
+                    </button>
+                  </div>
                 </div>
 
               </div>
@@ -236,6 +247,12 @@ export default function MisClientes() {
         />
       )}
 
+      {clienteRecomendar && (
+        <RecomendarProductos
+          cliente={clienteRecomendar}
+          onClose={() => setClienteRecomendar(null)}
+        />
+      )}
     </div>
   );
 }

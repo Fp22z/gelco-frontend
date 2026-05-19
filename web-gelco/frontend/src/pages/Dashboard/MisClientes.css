@@ -273,3 +273,14 @@
   color: #fff;
   border-color: #E8956D;
 }
+
+.btn-recomendar-card {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.btn-recomendar-card:hover { opacity: 1; }
