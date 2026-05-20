@@ -32,6 +32,19 @@
   margin: 0;
 }
 
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-close-modal:hover {
+  color: #1f2937;
+}
+
 /* ── TABS ── */
 .recomendar-tabs {
   display: flex;
@@ -214,6 +227,24 @@
 .recomendar-footer-btns {
   display: flex;
   gap: 10px;
+}
+
+.btn-cancelar {
+  padding: 10px 20px;
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancelar:hover {
+  background: #f3f4f6;
+  color: #1f2937;
 }
 
 .btn-agregar-pedido {

@@ -220,6 +220,7 @@
   padding-top: 10px;
   font-size: 13px;
   color: #6b7280;
+  margin-top: auto;
 }
 
 .btn-eliminar-card {
@@ -284,3 +285,199 @@
 }
 
 .btn-recomendar-card:hover { opacity: 1; }
+
+/* ========================================================
+   ESTILOS PARA EL MENÚ FLOTANTE DE FILTROS 
+   ======================================================== */
+
+.filtros-wrapper {
+  position: relative;
+}
+
+.btn-filtros.filtros-activos {
+  background: #FFF5F0;
+  border-color: #E8956D;
+  color: #E8956D;
+  font-weight: 600;
+}
+
+.filtros-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 260px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: modalIn 0.2s ease-out;
+}
+
+.filtros-title {
+  margin: 0;
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 700;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.filtro-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #4b5563;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.filtro-check input {
+  accent-color: #C94F7C;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.filtro-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filtro-select-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.filtro-select-group select {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #1f2937;
+  outline: none;
+  cursor: pointer;
+  background: #f9fafb;
+}
+
+.filtro-select-group select:focus {
+  border-color: #E8956D;
+  background: #fff;
+}
+
+.btn-limpiar-filtros {
+  margin-top: 4px;
+  padding: 8px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  color: #4b5563;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-limpiar-filtros:hover {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+/* ========================================================
+   ESTILOS PARA EL MODAL DE ELIMINAR CLIENTE
+   ======================================================== */
+
+.modal-confirmar {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 380px;
+  padding: 30px 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  text-align: center;
+  animation: modalIn 0.2s ease-out;
+}
+
+.modal-confirmar-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px) rotate(-5deg); }
+  75% { transform: translateX(5px) rotate(5deg); }
+}
+
+.modal-confirmar h3 {
+  margin: 0 0 10px 0;
+  color: #1f2937;
+  font-size: 20px;
+}
+
+.modal-confirmar p {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.modal-confirmar p strong {
+  color: #1f2937;
+}
+
+.modal-confirmar-btns {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-cancelar-eliminar {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 10px;
+  color: #4b5563;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-cancelar-eliminar:hover:not(:disabled) {
+  background: #f9fafb;
+}
+
+.btn-confirmar-eliminar {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: #ef4444; /* Rojo de alerta */
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-confirmar-eliminar:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.btn-confirmar-eliminar:disabled,
+.btn-cancelar-eliminar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

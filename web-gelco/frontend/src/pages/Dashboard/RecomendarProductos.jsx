@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProductos } from '../../services/productoService';
+import { useToast } from '../../services/toastService.jsx';
 import './RecomendarProductos.css';
 
 const PREFERENCIA_A_CATEGORIA = {
@@ -19,11 +20,12 @@ const CATEGORY_EMOJI = {
   'Capilar':          '💆',
 };
 
-export default function RecomendarProductos({ cliente, onClose }) {
+export default function RecomendarProductos({ cliente, onClose, onAddProducto }) {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [seleccionados, setSeleccionados] = useState(new Set());
   const [filtroActivo, setFiltroActivo] = useState('recomendados');
+  const { show: showToast } = useToast();
 
   const preferenciasCliente = cliente?.preferencias
     ? cliente.preferencias.split(',').map(p => p.trim()).filter(Boolean)
@@ -67,6 +69,7 @@ export default function RecomendarProductos({ cliente, onClose }) {
         {/* HEADER */}
         <div className="recomendar-header">
           <div>
+            <span className="badge-experto">✨ Sistema Experto</span>
             <h3>Recomendaciones para {cliente?.nombre}</h3>
             <p className="recomendar-subtitle">
               Basado en sus preferencias:{' '}
@@ -75,7 +78,7 @@ export default function RecomendarProductos({ cliente, onClose }) {
                 : 'Sin preferencias registradas'}
             </p>
           </div>
-          <button className="modal-close" onClick={onClose}>✕</button>
+          <button className="btn-close-modal" onClick={onClose}>✕</button>
         </div>
 
         {/* TABS */}
@@ -160,18 +163,24 @@ export default function RecomendarProductos({ cliente, onClose }) {
               ? `${seleccionados.size} producto${seleccionados.size > 1 ? 's' : ''} seleccionado${seleccionados.size > 1 ? 's' : ''}`
               : 'Selecciona productos para recomendar'}
           </span>
-          <div className="recomendar-footer-btns">
+<div className="recomendar-footer-btns">
             <button className="btn-cancelar" onClick={onClose}>Cancelar</button>
             <button
               className="btn-agregar-pedido"
               disabled={seleccionados.size === 0}
               onClick={() => {
-                // TODO: conectar con pedidos en HU siguiente
-                alert(`${seleccionados.size} productos listos para el pedido`);
+                // 3. Pasamos "true" como tercer parámetro para silenciar los individuales
+                productosSeleccionados.forEach(prod => {
+                  onAddProducto(prod, cliente.id, true);
+                });
+                
+                // 4. Lanzamos un único mensaje de resumen al usuario
+                showToast(`${seleccionados.size} productos añadidos al pedido`, 'success');
+                
                 onClose();
               }}
             >
-              + Crear Pedido ({seleccionados.size})
+              + Añadir al pedido ({seleccionados.size})
             </button>
           </div>
         </div>
