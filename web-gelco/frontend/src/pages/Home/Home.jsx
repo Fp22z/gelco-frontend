@@ -73,7 +73,7 @@ export default function Home() {
         </div>
         <div className="navbar-right">
           <Link to="/login" className="btn-nav-login">Iniciar Sesión</Link>
-          <Link to="/login" className="btn-cta-nav">Empieza gratis →</Link>
+          <Link to="/register" className="btn-cta-nav">Empieza gratis →</Link>
         </div>
       </nav>
 
@@ -103,7 +103,7 @@ export default function Home() {
           </p>
 
           <div className="hero-actions">
-            <Link to="/login" className="btn-hero-primary">
+            <Link to="/register" className="btn-hero-primary">
               Comenzar ahora
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -184,7 +184,10 @@ export default function Home() {
 
         <div className="features-grid stagger animate-on-scroll">
           <div className="feature-card featured">
-            <div className="feature-icon-wrap">📦</div>
+            <div className="feature-img-wrap">  
+                  <img src="/assets/features/pedidos.jpg" alt="" className="feature-img" onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; } } />
+                  <div className="feature-img-placeholder" style={{display:'none'}}></div>
+                </div>
             <div className="feature-tag">Más popular</div>
             <div className="feature-title">Gestión de Pedidos</div>
             <div className="feature-desc">
@@ -194,7 +197,10 @@ export default function Home() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon-wrap">📊</div>
+            <div className="feature-img-wrap">
+                  <img src="/assets/features/ventas.jpeg" alt="" className="feature-img" onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; } } />
+                  <div className="feature-img-placeholder" style={{display:'none'}}></div>
+                </div>
             <div className="feature-title">Control de Ventas</div>
             <div className="feature-desc">
               Métricas claras de tu rendimiento por campaña, mes y cliente.
@@ -203,7 +209,10 @@ export default function Home() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon-wrap">👥</div>
+            <div className="feature-img-wrap">
+                  <img src="/assets/features/clientes.jpg" alt="" className="feature-img" onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; } } />
+                  <div className="feature-img-placeholder" style={{display:'none'}}></div>
+                </div>
             <div className="feature-title">Gestión de Clientes</div>
             <div className="feature-desc">
               Historial completo, preferencias y contacto de cada cliente
@@ -212,7 +221,10 @@ export default function Home() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon-wrap">🗂️</div>
+            <div className="feature-img-wrap">
+                  <img src="/assets/features/catalogo.jpg" alt="" className="feature-img" onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; } } />
+                  <div className="feature-img-placeholder" style={{display:'none'}}></div>
+                </div>
             <div className="feature-title">Catálogo Digital</div>
             <div className="feature-desc">
               Muestra tus productos con fotos, precios y stock actualizado.
@@ -221,7 +233,10 @@ export default function Home() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon-wrap">🚚</div>
+            <div className="feature-img-wrap">
+                  <img src="/assets/features/entregas.jpg" alt="" className="feature-img" onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; } } />
+                  <div className="feature-img-placeholder" style={{display:'none'}}></div>
+                </div>
             <div className="feature-title">Seguimiento de Entregas</div>
             <div className="feature-desc">
               Rutas de reparto, choferes asignados y estado de entrega
@@ -230,7 +245,10 @@ export default function Home() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon-wrap">📚</div>
+            <div className="feature-img-wrap">
+                  <img src="/assets/features/capacitacion.jpg" alt="" className="feature-img" onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; } } />
+                  <div className="feature-img-placeholder" style={{display:'none'}}></div>
+                </div>
             <div className="feature-title">Capacitaciones</div>
             <div className="feature-desc">
               Accede a entrenamientos y materiales para mejorar tus
@@ -332,7 +350,7 @@ export default function Home() {
           </p>
         </div>
         <div className="cta-actions">
-          <Link to="/login" className="btn-cta-main">
+          <Link to="/register" className="btn-cta-main">
             🚀 Empezar ahora — es gratis
           </Link>
           <span className="cta-note">Sin tarjeta de crédito · Acceso inmediato</span>

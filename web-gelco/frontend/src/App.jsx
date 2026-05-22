@@ -5,6 +5,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { getInfoSession } from './services/sessionService';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
+import Register from './pages/Login/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
 import DashboardHome from './pages/Dashboard/DashboardHome';
 import GestionProductos from './pages/GestionProductos/GestionProductos';
@@ -35,6 +36,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />}>
