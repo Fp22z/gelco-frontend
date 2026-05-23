@@ -3,7 +3,7 @@ import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { getInfoSession } from '../../services/sessionService';
 import { logout } from '../../services/authService';
 import { useToast } from '../../services/toastService.jsx';
-import { CartProvider } from '../../context/CartContext'; // <--- IMPORTAMOS EL PROVEEDOR
+import { CartProvider } from '../../context/CartContext';
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -12,6 +12,8 @@ export default function Dashboard() {
   const { show: showToast } = useToast();
   const [userInfo, setUserInfo] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     const info = getInfoSession();
@@ -22,6 +24,19 @@ export default function Dashboard() {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setSidebarCollapsed(true);
+      } else {
+        setSidebarCollapsed(false);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleLogout = () => {
     logout();
     showToast('Sesión cerrada exitosamente', 'success');
@@ -29,14 +44,14 @@ export default function Dashboard() {
   };
 
   if (!userInfo) {
-    return <div className="dashboard-loading">Cargando...</div>;
+    return <div className="dashboard-loading"><div className="loading-spinner" /></div>;
   }
 
   const getMenuLinks = () => {
     switch (userInfo.perfil) {
       case 'ADMIN':
         return [
-          { label: 'Dashboards', path: '/dashboard', icon: '📊' },
+          { label: 'Dashboards', path: '/dashboard', icon: '' },
           { label: 'Usuarios', path: '/dashboard/usuarios', icon: '👥' },
           { label: 'Inventario', path: '/dashboard/inventario', icon: '📦' },
           { label: 'Reportes', path: '/dashboard/reportes', icon: '📈' },
@@ -61,44 +76,56 @@ export default function Dashboard() {
     }
   };
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Buenos días';
+    if (hour < 18) return 'Buenas tardes';
+    return 'Buenas noches';
+  };
+
   const getInitials = () => userInfo.nombre.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
   const menuLinks = getMenuLinks();
 
   return (
     <CartProvider userInfo={userInfo}>
-      <div className="dashboard">
-        {/* SIDEBAR */}
+      <div className={`dashboard ${sidebarCollapsed ? 'sidebar-collapsed' : ''} ${mobileSidebarOpen ? 'mobile-sidebar-open' : ''}`}>
+        {mobileSidebarOpen && <div className="mobile-sidebar-overlay" onClick={() => setMobileSidebarOpen(false)} />}
+
         <aside className="dashboard-sidebar">
           <div className="sidebar-header">
             <img src="/assets/logo-empresa.png" alt="GELCO" className="sidebar-logo" />
-            <div className="sidebar-brand">
-              <h3>Ventas por Catálogo Perú</h3>
-            </div>
+            {!sidebarCollapsed && <div className="sidebar-brand"><h3>Ventas por Catálogo Perú</h3></div>}
           </div>
           
           <nav className="sidebar-menu">
             {menuLinks.map((link) => (
-              <Link key={link.path} to={link.path} className={`sidebar-link ${location.pathname === link.path ? 'active' : ''}`}>
+              <Link key={link.path} to={link.path} className={`sidebar-link ${location.pathname === link.path ? 'active' : ''}`} onClick={() => setMobileSidebarOpen(false)}>
                 <span className="link-icon">{link.icon}</span>
-                <span className="link-label">{link.label}</span>
+                {!sidebarCollapsed && <span className="link-label">{link.label}</span>}
               </Link>
             ))}
           </nav>
 
           <div className="sidebar-footer">
-            <button className="sidebar-logout" onClick={handleLogout}>Cerrar Sesión</button>
+            <button className="sidebar-logout" onClick={handleLogout}>
+              {!sidebarCollapsed ? 'Cerrar Sesión' : '🚪'}
+            </button>
           </div>
         </aside>
 
-        {/* MAIN CONTENT */}
         <div className="dashboard-content">
           <header className="dashboard-topbar">
             <div className="topbar-left">
-              <h2 className="page-title">Bienvenido, {userInfo.nombre}</h2>
+              <button className="sidebar-toggle-btn" onClick={() => { setSidebarCollapsed(c => !c); setMobileSidebarOpen(o => !o); }}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </button>
+              <h2 className="page-title">{getGreeting()}, {userInfo.nombre.split(' ')[0]}</h2>
             </div>
             <div className="topbar-right">
-              <button className="topbar-icon-btn">💬</button>
-              <button className="topbar-icon-btn">🔔</button>
+              <button className="topbar-icon-btn" title="Mensajes">💬</button>
+              <button className="topbar-icon-btn" title="Notificaciones">🔔</button>
               <div className="avatar-wrapper">
                 <div className="user-avatar" title={userInfo.nombre} onClick={() => setDropdownOpen(o => !o)}>
                   {getInitials()}
@@ -116,10 +143,10 @@ export default function Dashboard() {
                         </div>
                       </div>
                       <hr className="dropdown-divider" />
-                      <button className="dropdown-item" onClick={() => { setDropdownOpen(false); navigate('/dashboard/mi-perfil'); }}>👤 Mi perfil</button>
-                      <button className="dropdown-item" onClick={() => setDropdownOpen(false)}>⚙️ Configuración</button>
+                      <button className="dropdown-item" onClick={() => { setDropdownOpen(false); navigate('/dashboard/mi-perfil'); }}> Mi perfil</button>
+                      <button className="dropdown-item" onClick={() => setDropdownOpen(false)}>️ Configuración</button>
                       <hr className="dropdown-divider" />
-                      <button className="dropdown-item dropdown-logout" onClick={handleLogout}>↪ Cerrar Sesión</button>
+                      <button className="dropdown-item dropdown-logout" onClick={handleLogout}> Cerrar Sesión</button>
                     </div>
                   </>
                 )}

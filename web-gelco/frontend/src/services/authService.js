@@ -1,83 +1,80 @@
 import { environment } from '../environments/environment';
 
-/**
- * Login with email and password
- * @param {Object} credentials
- * @param {string} credentials.email
- * @param {string} credentials.password
- * @returns {Promise<Object>} { token }
- */
 export const login = async (credentials) => {
   const response = await fetch(`${environment.url}/auth/login`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
-
   if (!response.ok) {
-    throw new Error('Login failed');
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.message || 'Login failed');
   }
-
   return response.json();
 };
 
-/**
- * Register with email, password, and name
- * @param {Object} data
- * @param {string} data.email
- * @param {string} data.password
- * @param {string} data.nombre
- * @returns {Promise<Object>} { token }
- */
 export const register = async (data) => {
   const response = await fetch(`${environment.url}/auth/register`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-
   if (!response.ok) {
-    throw new Error('Register failed');
+    const errData = await response.json().catch(() => ({}));
+    throw new Error(errData.message || 'Register failed');
   }
-
   return response.json();
 };
 
-/**
- * Save token to localStorage
- * @param {string} token
- */
-export const saveToken = (token) => {
-  localStorage.setItem('user_token', token);
+export const registerWithPhoto = async (data) => {
+  const formData = new FormData();
+  formData.append('nombre', data.nombre);
+  formData.append('email', data.email);
+  formData.append('password', data.password);
+  formData.append('perfil', data.perfil);
+  formData.append('dni', data.dni);
+  formData.append('telefono', data.telefono);
+  if (data.direccion) formData.append('direccion', data.direccion);
+  if (data.foto) formData.append('foto', data.foto);
+  const response = await fetch(`${environment.url}/auth/register`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({}));
+    throw new Error(errData.message || 'Register failed');
+  }
+  return response.json();
 };
 
-/**
- * Remove token from localStorage
- */
-export const logout = () => {
-  localStorage.removeItem('user_token');
+export const saveToken = (token) => { localStorage.setItem('user_token', token); };
+export const logout = () => { localStorage.removeItem('user_token'); };
+export const isLoggedIn = () => { return !!localStorage.getItem('user_token'); };
+export const getToken = () => { return localStorage.getItem('user_token'); };
+export const updateToken = (nuevoToken) => { localStorage.setItem('user_token', nuevoToken); };
+
+export const forgotPassword = async (email) => {
+  const response = await fetch(`${environment.url}/auth/forgot-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.message || 'No se pudo enviar el enlace de recuperacion');
+  }
+  return response.json();
 };
 
-/**
- * Check if user is logged in
- * @returns {boolean}
- */
-export const isLoggedIn = () => {
-  return !!localStorage.getItem('user_token');
-};
-
-/**
- * Get token from localStorage
- * @returns {string|null}
- */
-export const getToken = () => {
-  return localStorage.getItem('user_token');
-};
-
-export const updateToken = (nuevoToken) => {
-  localStorage.setItem('user_token', nuevoToken);
+export const resetPassword = async (data) => {
+  const response = await fetch(`${environment.url}/auth/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({}));
+    throw new Error(errData.message || 'No se pudo restablecer la contrasena');
+  }
+  return response.json();
 };

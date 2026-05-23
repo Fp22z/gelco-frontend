@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Home.css';
 
-// ── Scroll animation hook ─────────────────────────────────────────
 function useScrollReveal() {
   useEffect(() => {
     const els = document.querySelectorAll('.animate-on-scroll');
@@ -17,7 +16,6 @@ function useScrollReveal() {
   }, []);
 }
 
-// ── Animated counter ──────────────────────────────────────────────
 function useCounter(target, duration = 1800) {
   const ref = useRef(null);
   const started = useRef(false);
@@ -45,7 +43,6 @@ function useCounter(target, duration = 1800) {
   return ref;
 }
 
-// ── Stat counter component ────────────────────────────────────────
 function StatCounter({ value, suffix = '', label }) {
   const ref = useCounter(value);
   return (
@@ -58,24 +55,58 @@ function StatCounter({ value, suffix = '', label }) {
   );
 }
 
-// ── Main component ────────────────────────────────────────────────
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 600);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Volver arriba">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 16V4M4 10l6-6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
+  );
+}
+
 export default function Home() {
   useScrollReveal();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <main className="page">
 
-      {/* ── NAVBAR ── */}
       <nav className="navbar">
         <div className="navbar-left">
           <img src="/assets/logo-empresa.png" alt="GELCO" className="navbar-logo" />
           <span className="navbar-brand">GELCO</span>
         </div>
-        <div className="navbar-right">
+        <div className="navbar-right desktop-nav">
           <Link to="/login" className="btn-nav-login">Iniciar Sesión</Link>
           <Link to="/register" className="btn-cta-nav">Empieza gratis →</Link>
         </div>
+        <button className="navbar-mobile-toggle" onClick={() => setMobileMenuOpen(o => !o)} aria-label="Menú">
+          <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
+          <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
+          <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
+        </button>
       </nav>
+
+      {mobileMenuOpen && (
+        <div className="mobile-menu">
+          <div className="mobile-menu-overlay" onClick={() => setMobileMenuOpen(false)} />
+          <div className="mobile-menu-content">
+            <Link to="/login" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Iniciar Sesión</Link>
+            <Link to="/register" className="mobile-menu-link mobile-menu-cta" onClick={() => setMobileMenuOpen(false)}>Empieza gratis →</Link>
+          </div>
+        </div>
+      )}
 
       {/* ── HERO ── */}
       <section className="hero">
@@ -389,6 +420,8 @@ export default function Home() {
           <span>Hecho con <span className="footer-heart">♥</span> en Perú</span>
         </div>
       </footer>
+
+      <BackToTop />
 
     </main>
   );
