@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useCart } from '../../context/CartContext'; 
-import { getClientes, deleteCliente } from '../../services/clienteService';
-import { getMisPedidos } from '../../services/pedidoService'; 
-import { useToast } from '../../services/toastService.jsx';
+import { useCart } from '../../../context/CartContext'; 
+import { getClientes, deleteCliente } from '../../../services/clienteService';
+import { getMisPedidos } from '../../../services/pedidoService'; 
+import { useToast } from '../../../services/toastService.jsx';
 import RegistrarCliente from './RegistrarCliente';
 import './MisClientes.css';
 import RecomendarProductos from './RecomendarProductos';

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getProductos } from '../../services/productoService';
-import { useToast } from '../../services/toastService.jsx';
+import { getProductos } from '../../../services/productoService';
+import { useToast } from '../../../services/toastService.jsx';
 import './RecomendarProductos.css';
 
 const PREFERENCIA_A_CATEGORIA = {

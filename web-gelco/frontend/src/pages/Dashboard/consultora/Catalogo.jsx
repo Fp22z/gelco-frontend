@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useCart } from '../../context/CartContext'; // <--- IMPORTA EL CONTEXTO
-import { getProductos } from '../../services/productoService';
+import { useCart } from '../../../context/CartContext'; // <--- IMPORTA EL CONTEXTO
+import { getProductos } from '../../../services/productoService';
 import './Catalogo.css';
 
 const CATEGORY_EMOJI = {
@@ -206,6 +206,50 @@ export default function Catalogo() {
 
   return (
     <div className="catalogo-page">
+      
+      {/* 1. CONTENIDO PRINCIPAL ARRIBA */}
+      <div className="catalogo-main">
+        <div className="catalogo-topbar">
+          <div className="catalogo-search-box">
+            <span className="search-icon">🔍</span>
+            <input type="text" placeholder="Buscar productos..." value={busqueda} onChange={e => setBusqueda(e.target.value)} />
+          </div>
+          <span className="ordenar-label">Ordenar por:</span>
+          <select className="ordenar-select" value={ordenar} onChange={e => setOrdenar(e.target.value)}>
+            <option value="precio-asc">Precio (Menor a Mayor)</option>
+            <option value="precio-desc">Precio (Mayor a Menor)</option>
+            <option value="nombre-asc">Nombre (A-Z)</option>
+          </select>
+        </div>
+
+        <div className="catalogo-grid-area">
+          {loading && <div className="catalogo-loading">Cargando catálogo...</div>}
+          {!loading && error && <div className="catalogo-error">{error}</div>}
+          {!loading && !error && productosFiltrados.length === 0 && (
+            <div className="catalogo-empty">
+              No se encontraron productos con los filtros aplicados.
+              {hayFiltrosActivos && <button className="btn-limpiar-inline" onClick={limpiarFiltros}>Limpiar filtros</button>}
+            </div>
+          )}
+          {!loading && !error && Object.entries(porCategoria).map(([categoria, prods]) => (
+            <div key={categoria} className="catalogo-section">
+              <h3 className="catalogo-section-title">{categoria}</h3>
+              <div className="catalogo-grid">
+                {prods.map(p => (
+                  <ProductoCard 
+                    key={p.id} 
+                    producto={p} 
+                    onClick={setProductoSeleccionado} 
+                    onAddProducto={agregarAlCarrito} // <--- SE PASA DIRECTAMENTE AL BOTÓN
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 2. SIDEBAR ABAJO PARA QUE SE RENDERICE A LA DERECHA */}
       <aside className="catalogo-sidebar">
         <div className="filtro-section">
           <h4>Categorías</h4>
@@ -253,47 +297,7 @@ export default function Catalogo() {
         </div>
       </aside>
 
-      <div className="catalogo-main">
-        <div className="catalogo-topbar">
-          <div className="catalogo-search-box">
-            <span className="search-icon">🔍</span>
-            <input type="text" placeholder="Buscar productos..." value={busqueda} onChange={e => setBusqueda(e.target.value)} />
-          </div>
-          <span className="ordenar-label">Ordenar por:</span>
-          <select className="ordenar-select" value={ordenar} onChange={e => setOrdenar(e.target.value)}>
-            <option value="precio-asc">Precio (Menor a Mayor)</option>
-            <option value="precio-desc">Precio (Mayor a Menor)</option>
-            <option value="nombre-asc">Nombre (A-Z)</option>
-          </select>
-        </div>
-
-        <div className="catalogo-grid-area">
-          {loading && <div className="catalogo-loading">Cargando catálogo...</div>}
-          {!loading && error && <div className="catalogo-error">{error}</div>}
-          {!loading && !error && productosFiltrados.length === 0 && (
-            <div className="catalogo-empty">
-              No se encontraron productos con los filtros aplicados.
-              {hayFiltrosActivos && <button className="btn-limpiar-inline" onClick={limpiarFiltros}>Limpiar filtros</button>}
-            </div>
-          )}
-          {!loading && !error && Object.entries(porCategoria).map(([categoria, prods]) => (
-            <div key={categoria} className="catalogo-section">
-              <h3 className="catalogo-section-title">{categoria}</h3>
-              <div className="catalogo-grid">
-                {prods.map(p => (
-                  <ProductoCard 
-                    key={p.id} 
-                    producto={p} 
-                    onClick={setProductoSeleccionado} 
-                    onAddProducto={agregarAlCarrito} // <--- SE PASA DIRECTAMENTE AL BOTÓN
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
+      {/* MODAL (AL FINAL) */}
       {productoSeleccionado && (
         <ModalDetalle 
           producto={productoSeleccionado} 

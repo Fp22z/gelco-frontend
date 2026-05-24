@@ -1,3 +1,7 @@
+/* 1. Importamos las fuentes elegantes que usas en el diseño */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* 2. Reseteo Básico */
 *,
 *::before,
 *::after {
@@ -16,10 +20,16 @@ body {
   min-height: 100vh;
 }
 
+/* 3. CONFIGURACIÓN GLOBAL DEL BODY (Aquí está la magia) */
 body {
   display: block !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* AQUÍ DEFINIMOS LA LETRA GLOBAL PARA TODO EL SISTEMA */
+  font-family: 'Poppins', sans-serif;
+  color: #1f2937; /* Color de texto por defecto (var(--dark-text)) */
+  background-color: #fafafa; /* Fondo claro por defecto */
 }
 
 #root {
@@ -29,6 +39,7 @@ body {
   padding: 0 !important;
 }
 
+/* 4. SCROLLBARS ELEGANTE */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getMisPedidos } from '../../services/pedidoService';
+import { getMisPedidos } from '../../../services/pedidoService';
 import './HistorialPedidosCliente.css';
 
 const STATUS_CONFIG = {

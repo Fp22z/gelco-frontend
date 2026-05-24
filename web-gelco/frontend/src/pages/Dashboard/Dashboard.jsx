@@ -123,7 +123,7 @@ export default function Dashboard() {
         <aside className="dashboard-sidebar">
           <div className="sidebar-header">
             <img src="/assets/logo-empresa.png" alt="GELCO" className="sidebar-logo" />
-            {!sidebarCollapsed && <div className="sidebar-brand"><h3>Ventas por Catálogo Perú</h3></div>}
+            {!sidebarCollapsed && <div className="sidebar-brand"><h3>GELCO</h3></div>}
           </div>
           
           <nav className="sidebar-menu">

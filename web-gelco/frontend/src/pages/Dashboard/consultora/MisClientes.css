@@ -1,0 +1,591 @@
+/* ══════════════════════════════════════════════════════════
+   MIS CLIENTES - Estilo Boutique Unificado
+   ══════════════════════════════════════════════════════════ */
+
+.mis-clientes {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeIn 0.5s ease;
+}
+
+.clientes-loading, .clientes-empty {
+  text-align: center;
+  padding: 60px;
+  color: var(--light-gray);
+  font-size: 15px;
+}
+
+/* ── HEADER ── */
+.clientes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.clientes-search-row {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+}
+
+/* Caja de búsqueda blanca con focus elegante */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white); /* Se mantiene blanco */
+  border: 1.5px solid rgba(232,149,109,0.15);
+  border-radius: 12px;
+  padding: 11px 18px;
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-box:focus-within {
+  border-color: var(--primary-salmon);
+  box-shadow: 0 0 0 3px rgba(232,149,109,0.1);
+  transform: translateY(-1px);
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit; /* Hereda fuente global */
+  width: 100%;
+  color: var(--dark-text);
+}
+
+.search-box input::placeholder { 
+  color: #9ca3af; 
+  font-family: inherit;
+}
+
+.search-icon { 
+  color: #9ca3af; 
+  font-size: 18px; 
+  transition: all 0.3s ease; 
+}
+
+.search-box:focus-within .search-icon {
+  color: var(--primary-salmon);
+  transform: scale(1.15);
+}
+
+.btn-filtros {
+  padding: 11px 20px;
+  border: 1.5px solid rgba(232,149,109,0.15);
+  border-radius: 12px;
+  background: var(--white);
+  font-size: 14px;
+  font-family: inherit; /* Hereda fuente global */
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--dark-text);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.btn-filtros:hover { 
+  border-color: var(--primary-salmon);
+  background: rgba(232,149,109,0.05);
+}
+
+.btn-nuevo-cliente {
+  padding: 11px 24px;
+  background: linear-gradient(135deg, var(--primary-salmon), var(--secondary-pink));
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit; /* Hereda fuente global */
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(201,79,124,0.3);
+}
+
+.btn-nuevo-cliente:hover { 
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(201,79,124,0.4);
+}
+
+/* ── GRID ── */
+.clientes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .clientes-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .clientes-grid { grid-template-columns: 1fr; }
+}
+
+/* ── CARD ── */
+.cliente-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(232,149,109,0.08); /* Borde sutil */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.cliente-card:hover { 
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(232,149,109,0.12);
+  border-color: rgba(232,149,109,0.2);
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cliente-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-salmon), var(--secondary-pink));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(201,79,124,0.3);
+}
+
+.cliente-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cliente-info h4 {
+  font-family: 'Playfair Display', serif; /* Toque elegante para el nombre */
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin: 0 0 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cliente-info span {
+  font-size: 12px;
+  color: var(--light-gray);
+  font-weight: 500;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-menu {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 4px 6px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.btn-menu:hover { 
+  background: rgba(232,149,109,0.1); 
+  color: var(--primary-salmon);
+}
+
+.btn-whatsapp {
+  width: 32px;
+  height: 32px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
+}
+
+.btn-whatsapp:hover { 
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.4);
+}
+
+/* ── DETALLES ── */
+.cliente-detalles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(232,149,109,0.03);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.detalle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--dark-text);
+}
+
+.detalle-icon { 
+  font-size: 14px; 
+  color: var(--primary-salmon);
+}
+
+/* ── PREFERENCIAS ── */
+.cliente-prefs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.pref-tag {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(201,79,124,0.08); /* Fondo rosado sutil */
+  color: var(--secondary-pink);
+  border: 1px solid rgba(201,79,124,0.15);
+}
+
+/* ── ALERTA ── */
+.alerta-pendiente {
+  font-size: 12px;
+  color: #e11d48;
+  margin: 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── FOOTER CARD ── */
+.card-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(232,149,109,0.1);
+  padding-top: 14px;
+  font-size: 13px;
+  color: var(--light-gray);
+  margin-top: auto;
+}
+
+.btn-eliminar-card {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #9ca3af;
+  transition: all 0.2s;
+}
+
+.btn-eliminar-card:hover { 
+  color: #e11d48;
+  transform: scale(1.1);
+}
+
+.btn-recomendar-card {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #9ca3af;
+  transition: all 0.2s;
+}
+
+.btn-recomendar-card:hover { 
+  color: var(--primary-salmon);
+  transform: scale(1.1);
+}
+
+/* ── PAGINACIÓN ── */
+.paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 20px;
+  background: rgba(253,246,240,0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(232,149,109,0.1);
+}
+
+.pag-info {
+  font-size: 13px;
+  color: var(--light-gray);
+}
+
+.pag-botones {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.pag-botones button {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(232,149,109,0.2);
+  background: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.pag-botones button:hover:not(:disabled) { 
+  background: rgba(232,149,109,0.1); 
+  color: var(--primary-salmon);
+}
+
+.pag-botones button.pag-activa {
+  background: linear-gradient(135deg, var(--primary-salmon), var(--secondary-pink)); 
+  color: #fff; 
+  border-color: transparent; 
+  box-shadow: 0 2px 6px rgba(201,79,124,0.3);
+}
+
+.pag-botones button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ========================================================
+   ESTILOS PARA EL MENÚ FLOTANTE DE FILTROS 
+   ======================================================== */
+
+.filtros-wrapper {
+  position: relative;
+}
+
+.btn-filtros.filtros-activos {
+  background: rgba(232,149,109,0.08);
+  border-color: var(--primary-salmon);
+  color: var(--primary-salmon);
+  font-weight: 600;
+}
+
+.filtros-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 10px;
+  background: var(--white);
+  border: 1px solid rgba(232,149,109,0.15);
+  border-radius: 16px;
+  padding: 16px;
+  min-width: 260px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeUp 0.2s ease-out;
+}
+
+.filtros-title {
+  margin: 0;
+  font-size: 14px;
+  color: var(--dark-text);
+  font-weight: 700;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(232,149,109,0.1);
+  font-family: inherit;
+}
+
+.filtro-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--dark-text);
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.filtro-check:hover { color: var(--primary-salmon); }
+
+.filtro-check input {
+  accent-color: var(--secondary-pink);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.filtro-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filtro-select-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--light-gray);
+}
+
+.filtro-select-group select {
+  padding: 10px 12px;
+  border: 1px solid rgba(232,149,109,0.2);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--dark-text);
+  outline: none;
+  cursor: pointer;
+  background: rgba(253,246,240,0.3);
+  transition: all 0.2s;
+}
+
+.filtro-select-group select:focus {
+  border-color: var(--primary-salmon);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(232,149,109,0.1);
+}
+
+.btn-limpiar-filtros {
+  margin-top: 8px;
+  padding: 10px;
+  background: rgba(232,149,109,0.05);
+  border: none;
+  border-radius: 10px;
+  color: var(--primary-salmon);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-limpiar-filtros:hover {
+  background: rgba(232,149,109,0.15);
+}
+
+/* ========================================================
+   ESTILOS PARA EL MODAL DE ELIMINAR CLIENTE
+   ======================================================== */
+
+.modal-confirmar {
+  background: var(--white);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  padding: 32px 24px;
+  box-shadow: 0 25px 50px -12px rgba(225, 29, 72, 0.15); /* Sombra rojiza suave */
+  text-align: center;
+  animation: modalIn 0.3s ease-out;
+  border: 1px solid rgba(225, 29, 72, 0.1);
+}
+
+.modal-confirmar-icon {
+  font-size: 54px;
+  margin-bottom: 16px;
+  animation: shake 0.5s ease-in-out;
+  color: #e11d48;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px) rotate(-5deg); }
+  75% { transform: translateX(5px) rotate(5deg); }
+}
+
+.modal-confirmar h3 {
+  font-family: 'Playfair Display', serif; /* Título elegante */
+  margin: 0 0 12px 0;
+  color: var(--dark-text);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.modal-confirmar p {
+  color: var(--light-gray);
+  font-size: 14px;
+  margin: 0 0 28px 0;
+  line-height: 1.5;
+}
+
+.modal-confirmar p strong {
+  color: var(--dark-text);
+}
+
+.modal-confirmar-btns {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-cancelar-eliminar {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid rgba(232,149,109,0.3);
+  background: transparent;
+  border-radius: 12px;
+  color: var(--dark-text);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancelar-eliminar:hover:not(:disabled) {
+  background: rgba(232,149,109,0.05);
+}
+
+.btn-confirmar-eliminar {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: linear-gradient(135deg, #f43f5e, #e11d48); /* Rojo elegante */
+  color: #fff;
+  border-radius: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+}
+
+.btn-confirmar-eliminar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(225, 29, 72, 0.4);
+}
+
+.btn-confirmar-eliminar:disabled,
+.btn-cancelar-eliminar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}

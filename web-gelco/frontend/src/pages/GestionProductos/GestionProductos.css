@@ -161,3 +161,53 @@
     display: none;
   }
 }
+
+
+/* ── Tokens del sistema de diseño GELCO ── */
+:root {
+  --primary-salmon: #E8956D;
+  --secondary-pink: #C94F7C;
+  --bg-cream: #FDF6F0;
+  --dark-text: #1f2937;
+  --light-gray: #6b7280;
+}
+
+/* Sobreescribir colores hardcodeados */
+.btn-nuevo-producto {
+  padding: 11px 24px;
+  background: linear-gradient(135deg, var(--primary-salmon), var(--secondary-pink));
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(201, 79, 124, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-nuevo-producto::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-nuevo-producto:hover::before { opacity: 1; }
+
+.btn-nuevo-producto:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(201, 79, 124, 0.4);
+}
+
+.gestion-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--dark-text);
+}

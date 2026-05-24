@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getMisPedidos, getPedidoById } from '../../services/pedidoService';
-import { useToast } from '../../services/toastService.jsx';
+import { getMisPedidos, getPedidoById } from '../../../services/pedidoService.js';
+import { useToast } from '../../../services/toastService.jsx';
 import './Pedidos.css';
 
 // ── Helpers ───────────────────────────────────────────────────────

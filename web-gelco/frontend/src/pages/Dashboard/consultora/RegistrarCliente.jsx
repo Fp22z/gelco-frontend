@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { createCliente, updateCliente } from '../../services/clienteService';
-import { useToast } from '../../services/toastService.jsx';
+import { createCliente, updateCliente } from '../../../services/clienteService';
+import { useToast } from '../../../services/toastService.jsx';
 import './RegistrarCliente.css';
 
 const PREFERENCIAS_OPCIONES = [

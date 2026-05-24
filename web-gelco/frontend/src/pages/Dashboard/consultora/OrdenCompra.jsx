@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getPedidosDisponibles, getMisOrdenes, generarOrdenes } from '../../services/ordenCompraService';
-import { useToast } from '../../services/toastService.jsx';
+import { getPedidosDisponibles, getMisOrdenes, generarOrdenes } from '../../../services/ordenCompraService.js';
+import { useToast } from '../../../services/toastService.jsx';
 import './OrdenCompra.css';
 
 function fmtFecha(f) {

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getInfoSession } from '../../services/sessionService';
-import DashboardAdmin from './DashboardAdmin';
-import DashboardConsultora from './DashboardConsultora';
-import DashboardDistribuidor from './DashboardDistribuidor';
-import DashboardRRHH from './DashboardRRHH';
-import DashboardRecepcionista from './DashboardRecepcionista';
-import DashboardFacturador from './DashboardFacturador';
-import DashboardDespacho from './DashboardDespacho';
+import DashboardAdmin from './admin/DashboardAdmin';
+import DashboardConsultora from './consultora/DashboardConsultora';
+import DashboardDistribuidor from './distribuidor/DashboardDistribuidor';
+import DashboardRRHH from './rrhh/DashboardRRHH';
+import DashboardRecepcionista from './recepcionista/DashboardRecepcionista';
+import DashboardFacturador from './facturador/DashboardFacturador';
+import DashboardDespacho from './despacho/DashboardDespacho';
 
 export default function DashboardHome() {
   const [userInfo, setUserInfo] = useState(null);
