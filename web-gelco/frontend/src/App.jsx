@@ -21,6 +21,11 @@ import Flota from './pages/Dashboard/Flota';
 import Historial from './pages/Dashboard/Historial';
 import MiPerfil from './pages/MiPerfil/MiPerfil';
 import MisClientes from './pages/Dashboard/MisClientes';
+import OrdenCompra from './pages/Dashboard/OrdenCompra';
+import DashboardRRHH from './pages/Dashboard/DashboardRRHH';
+import DashboardRecepcionista from './pages/Dashboard/DashboardRecepcionista';
+import DashboardFacturador from './pages/Dashboard/DashboardFacturador';
+import DashboardDespacho from './pages/Dashboard/DashboardDespacho';
 
 function RoleRoute({ allowedRoles }) {
   const session = getInfoSession();
@@ -40,6 +45,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
 
+          {/* Rutas Privadas */}
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<DashboardHome />} />
@@ -55,18 +61,41 @@ export default function App() {
               </Route>
 
               {/* Solo CONSULTORA */}
-              
               <Route element={<RoleRoute allowedRoles={['CONSULTORA']} />}>
                 <Route path="catalogo" element={<Catalogo />} />
                 <Route path="pedidos" element={<Pedidos />} />
                 <Route path="clientes" element={<MisClientes />} />
                 <Route path="capacitaciones" element={<Capacitaciones />} />
+                <Route path="orden-compra" element={<OrdenCompra />} />
               </Route>
 
               {/* Solo DISTRIBUIDOR */}
               <Route element={<RoleRoute allowedRoles={['DISTRIBUIDOR']} />}>
                 <Route path="flota" element={<Flota />} />
                 <Route path="historial" element={<Historial />} />
+              </Route>
+
+              {/* Solo RECURSOS_HUMANOS */}
+              <Route element={<RoleRoute allowedRoles={['RECURSOS_HUMANOS']} />}>
+                <Route path="gestion-consultoras" element={<DashboardRRHH />} />
+                <Route path="capacitaciones-rrhh" element={<DashboardRRHH />} />
+                <Route path="estadisticas" element={<DashboardRRHH />} />
+              </Route>
+
+              {/* Solo RECEPCIONISTA */}
+              <Route element={<RoleRoute allowedRoles={['RECEPCIONISTA']} />}>
+                <Route path="devoluciones" element={<DashboardRecepcionista />} />
+              </Route>
+
+              {/* Solo FACTURADOR */}
+              <Route element={<RoleRoute allowedRoles={['FACTURADOR']} />}>
+                <Route path="facturacion" element={<DashboardFacturador />} />
+              </Route>
+
+              {/* Solo DESPACHO */}
+              <Route element={<RoleRoute allowedRoles={['DESPACHO']} />}>
+                <Route path="ordenes-despacho" element={<DashboardDespacho />} />
+                <Route path="inventario-despacho" element={<DashboardDespacho />} />
               </Route>
             </Route>
           </Route>

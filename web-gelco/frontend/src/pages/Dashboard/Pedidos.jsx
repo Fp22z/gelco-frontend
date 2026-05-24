@@ -28,12 +28,13 @@ function fmtMonto(n) {
 
 function EstadoEntregaBadge({ estado }) {
   const cls = {
-    'En proceso': 'en-proceso',
-    'En camino':  'en-camino',
-    'Entregado':  'entregado',
-    'Cancelado':  'cancelado',
+    'Creado':             'en-proceso',
+    'Enviado a Almacén':  'en-camino',
+    'En camino':          'en-camino',
+    'Entregado':          'entregado',
+    'Cancelado':          'cancelado',
   }[estado] || 'en-proceso';
-  return (
+    return (
     <span className={`modal-status-pill ${cls}`}>
       <span className="status-dot" />
       {estado}
@@ -177,7 +178,7 @@ export default function Pedidos() {
 
   const cambiarPagina = (n) => { if (n >= 1 && n <= totalPaginas) setPaginaActual(n); };
 
-  const ESTADOS = ['Todos los Estados', 'En proceso', 'En camino', 'Entregado', 'Cancelado'];
+  const ESTADOS = ['Todos los Estados', 'Creado', 'Enviado a Almacén', 'En camino', 'Entregado', 'Cancelado'];
 
   return (
     <div className="mis-pedidos">

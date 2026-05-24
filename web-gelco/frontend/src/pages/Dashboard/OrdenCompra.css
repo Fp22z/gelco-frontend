@@ -1,0 +1,289 @@
+.oc-page {
+  padding: 24px;
+  max-width: 900px;
+}
+
+.oc-header {
+  margin-bottom: 24px;
+}
+
+.oc-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--dark-text, #1f2937);
+  margin: 0 0 4px 0;
+}
+
+.oc-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* TABS */
+.oc-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 0;
+}
+
+.oc-tab {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.oc-tab.active {
+  color: #E8956D;
+  border-bottom-color: #E8956D;
+}
+
+.oc-tab-badge {
+  background: #E8956D;
+  color: white;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+/* CONTENT */
+.oc-content {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.oc-loading, .oc-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: #6b7280;
+}
+
+.oc-empty p { margin: 0 0 8px 0; }
+.oc-empty-hint { font-size: 13px; color: #9ca3af; }
+
+/* SELECT ALL */
+.oc-select-all-row {
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 12px;
+}
+
+.oc-check-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* LISTA PEDIDOS DISPONIBLES */
+.oc-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.oc-pedido-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 2px solid #f3f4f6;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.oc-pedido-card:hover {
+  border-color: #E8956D;
+  background: #fdf6f0;
+}
+
+.oc-pedido-card.selected {
+  border-color: #E8956D;
+  background: #fff7f3;
+}
+
+.oc-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #E8956D;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.oc-pedido-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.oc-pedido-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.oc-pedido-id {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.oc-pedido-fecha {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.oc-pedido-cliente {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.oc-pedido-total {
+  font-weight: 700;
+  font-size: 16px;
+  color: #E8956D;
+  white-space: nowrap;
+}
+
+/* FOOTER GENERAR */
+.oc-footer {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.oc-resumen {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.oc-total-sel {
+  font-weight: 700;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.btn-generar-oc {
+  padding: 12px 28px;
+  background: #E8956D;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.btn-generar-oc:hover { background: #d4784f; }
+.btn-generar-oc:disabled { background: #d1d5db; cursor: not-allowed; }
+
+/* LISTA ÓRDENES */
+.oc-ordenes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.oc-orden-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border: 1px solid #f3f4f6;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.oc-orden-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.oc-orden-id {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1f2937;
+}
+
+.oc-orden-pedido {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.oc-orden-cliente, .oc-orden-fecha {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.oc-orden-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.oc-orden-total {
+  font-size: 18px;
+  font-weight: 700;
+  color: #E8956D;
+}
+
+.oc-factura-badge {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.oc-factura-badge.pendiente {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.oc-factura-badge.pagada {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.btn-ir-disponibles {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background: #E8956D;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}

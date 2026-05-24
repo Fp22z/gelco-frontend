@@ -64,6 +64,7 @@ export default function Dashboard() {
           { label: 'Mis Pedidos', path: '/dashboard/pedidos', icon: '📦' },
           { label: 'Mis Clientes', path: '/dashboard/clientes', icon: '👥' },
           { label: 'Capacitaciones', path: '/dashboard/capacitaciones', icon: '🎓' },
+          { label: 'Orden de Compra',path: '/dashboard/orden-compra',  icon: '📤' }
         ];
       case 'DISTRIBUIDOR':
         return [
@@ -71,6 +72,34 @@ export default function Dashboard() {
           { label: 'Flota', path: '/dashboard/flota', icon: '🚚' },
           { label: 'Historial', path: '/dashboard/historial', icon: '📜' },
         ];
+
+      case 'RECURSOS_HUMANOS':
+        return [
+          { label: 'Panel de Control',       path: '/dashboard',                      icon: '📊' },
+          { label: 'Gestión Consultoras',    path: '/dashboard/gestion-consultoras',  icon: '👥' },
+          { label: 'Capacitaciones',         path: '/dashboard/capacitaciones-rrhh',  icon: '🎓' },
+          { label: 'Estadísticas de Ventas', path: '/dashboard/estadisticas',         icon: '📈' },
+        ];
+
+      case 'RECEPCIONISTA':
+        return [
+          { label: 'Panel de Control', path: '/dashboard',              icon: '📊' },
+          { label: 'Devoluciones',     path: '/dashboard/devoluciones', icon: '↩️' },
+        ];
+
+      case 'FACTURADOR':
+        return [
+          { label: 'Panel de Control', path: '/dashboard',              icon: '📊' },
+          { label: 'Facturación',      path: '/dashboard/facturacion',  icon: '🧾' },
+        ];
+
+      case 'DESPACHO':
+        return [
+          { label: 'Panel de Control',    path: '/dashboard',                       icon: '📊' },
+          { label: 'Órdenes de Despacho', path: '/dashboard/ordenes-despacho',      icon: '📦' },
+          { label: 'Inventario',          path: '/dashboard/inventario-despacho',   icon: '🏪' },
+        ];
+
       default:
         return [];
     }
