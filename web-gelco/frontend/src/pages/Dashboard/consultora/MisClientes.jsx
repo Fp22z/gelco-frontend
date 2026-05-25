@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { useCart } from '../../../context/CartContext'; 
 import { getClientes, deleteCliente } from '../../../services/clienteService';
 import { getMisPedidos } from '../../../services/pedidoService'; 
@@ -131,7 +132,29 @@ export default function MisClientes() {
     return pref.split(',').map(p => p.trim()).filter(Boolean);
   };
 
-  if (loading) return <div className="clientes-loading">Cargando clientes...</div>;
+  if (loading) return (
+    <div className="mis-clientes">
+      <div className="clientes-skeleton-grid">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="cliente-card-skeleton">
+            <div className="skeleton-header-row">
+              <div className="skeleton-avatar-circle" />
+              <div className="skeleton-info-block">
+                <div className="skeleton-name" />
+                <div className="skeleton-phone" />
+              </div>
+            </div>
+            <div className="skeleton-detail-row" />
+            <div className="skeleton-prefs-row">
+              <div className="skeleton-pref-tag" />
+              <div className="skeleton-pref-tag" />
+            </div>
+            <div className="skeleton-footer-row" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <div className="mis-clientes">
@@ -336,7 +359,7 @@ export default function MisClientes() {
       )}
 
       {/* === NUEVO MODAL DE CONFIRMACIÓN DE ELIMINACIÓN === */}
-      {clienteEliminar && (
+      {clienteEliminar && createPortal(
         <div className="modal-overlay" onClick={() => !isDeleting && setClienteEliminar(null)}>
           <div className="modal-confirmar" onClick={e => e.stopPropagation()}>
             <div className="modal-confirmar-icon">🗑️</div>
@@ -359,7 +382,8 @@ export default function MisClientes() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

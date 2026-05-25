@@ -925,6 +925,43 @@ body {
   font-weight: 600;
 }
 
+/* ── PASSWORD CHECKS ─────────────────────────────────────── */
+.pw-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.pw-check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+}
+
+.pw-check-item.passed {
+  color: #059669;
+}
+
+.pw-check-item.passed .pw-check-icon {
+  color: #059669;
+}
+
+.pw-check-icon {
+  font-size: 13px;
+  width: 14px;
+  text-align: center;
+  color: #d1d5db;
+  transition: color 0.2s ease;
+}
+
 /* ── PASSWORD STRENGTH ───────────────────────────────────── */
 .pw-strength-wrap {
   display: flex;

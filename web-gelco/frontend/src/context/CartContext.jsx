@@ -37,7 +37,12 @@ export function CartProvider({ children, userInfo }) {
   // ── AHORA RECIBE EL CLIENTE OPCIONALMENTE ──
 // ── AHORA RECIBE EL PARÁMETRO "SILENT" AL FINAL ──
   const agregarAlCarrito = (producto, clienteIdParaAutoSelect = null, silent = false) => {
-    
+
+    if (!producto.activo || producto.stock <= 0) {
+      if (!silent) showToast(`${producto.nombre} no tiene stock disponible`, 'warning');
+      return;
+    }
+
     // LÓGICA DE AUTO-SELECCIÓN DE CLIENTE
     if (clienteIdParaAutoSelect) {
       const nuevoId = String(clienteIdParaAutoSelect);
@@ -55,7 +60,7 @@ export function CartProvider({ children, userInfo }) {
         return;
       }
       if (!silent) showToast('Cantidad actualizada en el pedido', 'success');
-      setCarrito(prev => prev.map(item => 
+      setCarrito(prev => prev.map(item =>
         item.producto.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
       ));
     } else {
@@ -72,9 +77,15 @@ export function CartProvider({ children, userInfo }) {
       showToast('Stock máximo alcanzado', 'warning');
       return;
     }
-    setCarrito(prev => prev.map(i => 
+    setCarrito(prev => prev.map(i =>
       i.producto.id === productoId ? { ...i, cantidad: nuevaCant } : i
     ).filter(i => i.cantidad > 0));
+  };
+
+  const vaciarCarrito = () => {
+    setCarrito([]);
+    setSelectedClienteId('');
+    setIsCartOpen(false);
   };
 
   const handleConfirmarPedido = async () => {
@@ -122,7 +133,10 @@ export function CartProvider({ children, userInfo }) {
               <div className="cart-drawer" onClick={e => e.stopPropagation()}>
                 <div className="cart-header">
                   <h2>Bolsa de Pedido</h2>
-                  <button className="btn-close-cart" onClick={() => setIsCartOpen(false)}>✕</button>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button className="btn-close-cart" onClick={vaciarCarrito} title="Vaciar pedido">🗑️</button>
+                    <button className="btn-close-cart" onClick={() => setIsCartOpen(false)}>✕</button>
+                  </div>
                 </div>
 
                 <div className="cart-client-section">

@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useCart } from '../../../context/CartContext'; // <--- IMPORTA EL CONTEXTO
+import { useCart } from '../../../context/CartContext';
 import { getProductos } from '../../../services/productoService';
+import { useToast } from '../../../services/toastService.jsx';
 import './Catalogo.css';
+import Modal from "../../../components/Modal/Modal.jsx";
 
 const CATEGORY_EMOJI = {
   'Maquillaje':       '💄',
@@ -26,8 +28,8 @@ function ModalDetalle({ producto, onClose, onAddProducto }) {
   const descuentoPct = producto.enOferta ? Math.round(((producto.precio - producto.precioOferta) / producto.precio) * 100) : 0;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-detalle" onClick={e => e.stopPropagation()}>
+    <Modal onClose={onClose} size="md">
+      <div className="modal-detalle-inner">
         <div className="modal-img-container">
           <div className="card-badges-container">
             {producto.enCampania && <span className="card-badge campania">⚡ Campaña</span>}
@@ -67,7 +69,7 @@ function ModalDetalle({ producto, onClose, onAddProducto }) {
           </div>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }
 
@@ -100,7 +102,7 @@ function ProductoCard({ producto, onClick, onAddProducto }) {
         </div>
         <span className={`producto-status ${status.cls}`}><span className="status-dot" />{status.label}</span>
       </div>
-      <button className="btn-anadir" disabled={status.cls === 'agotado'} onClick={e => { e.stopPropagation(); onAddProducto(producto); }}>
+      <button className="btn-agregar-carrito" disabled={status.cls === 'agotado'} onClick={e => { e.stopPropagation(); onAddProducto(producto); }}>
         {status.cls === 'agotado' ? 'Agotado' : '+ Añadir'}
       </button>
     </div>
@@ -118,7 +120,16 @@ function CheckItem({ label, count, checked, onChange }) {
 }
 
 export default function Catalogo() {
-  const { agregarAlCarrito } = useCart(); // <--- OBTENEMOS LA FUNCIÓN GLOBAL
+  const { agregarAlCarrito } = useCart();
+  const { show: showToast } = useToast();
+
+  const handleAddProducto = (producto) => {
+    if (!producto.activo || producto.stock <= 0) {
+      showToast(`${producto.nombre} no tiene stock disponible`, 'warning');
+      return;
+    }
+    agregarAlCarrito(producto);
+  };
 
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -240,7 +251,7 @@ export default function Catalogo() {
                     key={p.id} 
                     producto={p} 
                     onClick={setProductoSeleccionado} 
-                    onAddProducto={agregarAlCarrito} // <--- SE PASA DIRECTAMENTE AL BOTÓN
+                    onAddProducto={handleAddProducto}
                   />
                 ))}
               </div>
@@ -302,7 +313,7 @@ export default function Catalogo() {
         <ModalDetalle 
           producto={productoSeleccionado} 
           onClose={() => setProductoSeleccionado(null)} 
-          onAddProducto={agregarAlCarrito} // <--- SE PASA DIRECTAMENTE AL MODAL
+          onAddProducto={handleAddProducto}
         />
       )}
     </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { getProductos } from '../../../services/productoService';
 import { useToast } from '../../../services/toastService.jsx';
 import './RecomendarProductos.css';
@@ -62,7 +63,7 @@ export default function RecomendarProductos({ cliente, onClose, onAddProducto })
 
   const productosSeleccionados = productos.filter(p => seleccionados.has(p.id));
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="recomendar-modal" onClick={e => e.stopPropagation()}>
 
@@ -186,6 +187,7 @@ export default function RecomendarProductos({ cliente, onClose, onAddProducto })
         </div>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

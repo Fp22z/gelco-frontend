@@ -41,7 +41,7 @@
   border: none;
   background: none;
   font-size: 14px;
-  font-family: inherit; /* Hereda fuente global */
+  font-family: inherit;
   font-weight: 600;
   color: var(--light-gray);
   cursor: pointer;
@@ -60,6 +60,12 @@
 .oc-tab.active {
   color: var(--primary-salmon);
   border-bottom-color: var(--primary-salmon);
+}
+
+.oc-tab:focus-visible {
+  outline: 2px solid var(--primary-salmon);
+  outline-offset: -2px;
+  border-radius: 4px;
 }
 
 .oc-tab-badge {
@@ -110,6 +116,13 @@
 
 .oc-check-label:hover {
   color: var(--primary-salmon);
+}
+
+.oc-check-label input[type="checkbox"] {
+  accent-color: var(--secondary-pink);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 
 /* ── LISTA PEDIDOS DISPONIBLES ── */
@@ -261,6 +274,11 @@
   box-shadow: none;
 }
 
+.btn-generar-oc:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
 /* ── LISTA ÓRDENES ── */
 .oc-ordenes-lista {
   display: flex;
@@ -352,7 +370,7 @@
   background: linear-gradient(135deg, var(--primary-salmon), var(--secondary-pink));
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
@@ -364,4 +382,82 @@
 .btn-ir-disponibles:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(201,79,124,0.3);
+}
+
+.btn-ir-disponibles:focus-visible {
+  outline: 2px solid var(--primary-salmon);
+  outline-offset: 2px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .oc-page {
+    padding: 16px;
+  }
+
+  .oc-title {
+    font-size: 24px;
+  }
+
+  .oc-tabs {
+    overflow-x: auto;
+    gap: 8px;
+  }
+
+  .oc-tab {
+    padding: 10px 16px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .oc-content {
+    padding: 20px;
+  }
+
+  .oc-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .btn-generar-oc {
+    width: 100%;
+    text-align: center;
+  }
+
+  .oc-orden-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .oc-orden-right {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .oc-page {
+    padding: 12px;
+  }
+
+  .oc-title {
+    font-size: 20px;
+  }
+
+  .oc-subtitle {
+    font-size: 13px;
+  }
+
+  .oc-pedido-card {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .oc-pedido-total {
+    font-size: 18px;
+  }
 }

@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getInfoSession } from '../../services/sessionService';
 import { updateToken } from '../../services/authService';
-import { getConsultoraByUsuario, updateUsuario, updateConsultora } from '../../services/perfilService';
+import { getConsultoraByUsuario, updateUsuario, updateConsultora, actualizarFoto } from '../../services/perfilService';
+import { useToast } from '../../services/toastService.jsx';
 import './MiPerfil.css';
 
 export default function MiPerfil() {
@@ -13,6 +14,10 @@ export default function MiPerfil() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [fotoPreview, setFotoPreview] = useState(null);
+  const fileInputRef = useRef(null);
+  const { show: showToast } = useToast();
 
   const [form, setForm] = useState({
     nombre: userInfo?.nombre || '',
@@ -59,6 +64,42 @@ export default function MiPerfil() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleFotoChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const contentType = file.type;
+    if (!contentType?.startsWith('image/')) {
+      showToast('Selecciona un archivo de imagen válido (JPG, PNG, GIF, WEBP)', 'warning');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('La imagen es muy grande. Máximo 5MB.', 'warning');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (ev) => setFotoPreview(ev.target?.result);
+    reader.readAsDataURL(file);
+
+    setUploadingPhoto(true);
+    try {
+      const result = await actualizarFoto(userInfo.userId, file);
+      if (result.token) {
+        updateToken(result.token);
+        window.location.reload();
+      } else {
+        showToast('Foto subida, pero no se pudo actualizar el token', 'warning');
+      }
+    } catch (e) {
+      showToast(e.message || 'Error al subir la foto', 'danger');
+      setFotoPreview(null);
+    } finally {
+      setUploadingPhoto(false);
+    }
   };
 
   const handleSave = async () => {
@@ -121,7 +162,30 @@ export default function MiPerfil() {
 
         {/* CARD IZQUIERDA */}
         <div className="perfil-left-card">
-          <div className="perfil-avatar-large">{getInitials()}</div>
+          <div
+            className="perfil-avatar-large"
+            style={fotoPreview || consultora?.fotoUrl ? {
+              background: `url(${fotoPreview || consultora.fotoUrl}) center/cover no-repeat`,
+              backgroundColor: 'transparent',
+            } : {}}
+          >
+            {!fotoPreview && !consultora?.fotoUrl && getInitials()}
+            {uploadingPhoto && <div className="avatar-upload-overlay">⏳</div>}
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleFotoChange}
+          />
+          <button
+            className="btn-foto"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploadingPhoto}
+          >
+            {uploadingPhoto ? 'Subiendo...' : '⊕ Subir nueva foto'}
+          </button>
           <h3 className="perfil-nombre">{userInfo?.nombre}</h3>
 
           {userInfo?.perfil === 'CONSULTORA' && consultora?.nivel && (
@@ -129,8 +193,6 @@ export default function MiPerfil() {
               ● {consultora.nivel}
             </span>
           )}
-
-          <button className="btn-foto">⊕ Subir nueva foto</button>
 
           <div className="perfil-stats">
             {userInfo?.perfil === 'CONSULTORA' && consultora && (

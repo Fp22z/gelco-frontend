@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useRef } from 'react';
 
 /**
  * @typedef {Object} Toast
@@ -17,28 +17,31 @@ const ToastContext = createContext();
  */
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
-
-  const show = useCallback((message, type = 'info') => {
-    const id = Date.now();
-    const toast = { id, message, type };
-    
-    setToasts((prevToasts) => [...prevToasts, toast]);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-      remove(id);
-    }, 3000);
-
-    return id;
-  }, []);
+  const timerRef = useRef(new Map());
 
   const remove = useCallback((id) => {
     setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
   }, []);
 
   const clear = useCallback(() => {
+    timerRef.current.forEach(timer => clearTimeout(timer));
+    timerRef.current.clear();
     setToasts([]);
   }, []);
+
+  const show = useCallback((message, type = 'info') => {
+    const id = Date.now();
+    setToasts((prevToasts) => [...prevToasts, { id, message, type }]);
+
+    const timer = setTimeout(() => {
+      remove(id);
+      timerRef.current.delete(id);
+    }, 3000);
+
+    timerRef.current.set(id, timer);
+
+    return id;
+  }, [remove]);
 
   const value = {
     toasts,
@@ -60,7 +63,7 @@ export const ToastProvider = ({ children }) => {
  */
 export const useToast = () => {
   const context = useContext(ToastContext);
-  
+
   if (!context) {
     throw new Error('useToast must be used within ToastProvider');
   }

@@ -1,5 +1,9 @@
+/* ══════════════════════════════════════════════════════════
+   HISTORIAL PEDIDOS CLIENTE - Estilo Boutique Unificado
+   ══════════════════════════════════════════════════════════ */
+
 .historial-modal {
-  background: #fff;
+  background: var(--white);
   border-radius: 20px;
   width: 100%;
   max-width: 680px;
@@ -9,12 +13,13 @@
   box-shadow: 0 15px 50px rgba(0,0,0,0.15);
   overflow: hidden;
   animation: modalIn 0.25s ease-out;
+  border: 1px solid rgba(232,149,109,0.1);
 }
 
 .badge-historial {
   display: inline-block;
-  background: #fdf6f0;
-  color: #E8956D;
+  background: rgba(232,149,109,0.1);
+  color: var(--primary-salmon);
   font-size: 11px;
   font-weight: 700;
   padding: 4px 10px;
@@ -26,7 +31,7 @@
 
 .historial-header {
   padding: 24px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid rgba(232,149,109,0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,20 +40,35 @@
 .historial-header h2 {
   margin: 0;
   font-size: 19px;
-  color: #1f2937;
+  color: var(--dark-text);
+  font-family: 'Playfair Display', serif;
 }
 
 .btn-close-historial {
-  background: #f3f4f6;
+  background: rgba(232,149,109,0.05);
   border: none;
   width: 32px;
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  color: #6b7280;
+  color: var(--light-gray);
   font-weight: bold;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.btn-close-historial:hover { background: #e5e7eb; color: #1f2937; }
+
+.btn-close-historial:hover {
+  background: rgba(201,79,124,0.1);
+  color: var(--secondary-pink);
+  transform: rotate(90deg);
+}
+
+.btn-close-historial:focus-visible {
+  outline: 2px solid var(--primary-salmon);
+  outline-offset: 2px;
+}
 
 .historial-body {
   padding: 24px;
@@ -62,7 +82,7 @@
 .historial-loading, .historial-empty {
   text-align: center;
   padding: 40px;
-  color: #6b7280;
+  color: var(--light-gray);
   font-size: 14px;
 }
 
@@ -74,28 +94,37 @@
 }
 
 .stat-box {
-  background: #f9fafb;
-  border: 1px solid #f3f4f6;
+  background: rgba(253,246,240,0.5);
+  border: 1px solid rgba(232,149,109,0.1);
   border-radius: 12px;
   padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.stat-box:hover {
+  border-color: rgba(232,149,109,0.2);
+  box-shadow: 0 4px 12px rgba(232,149,109,0.06);
 }
 
 .stat-label {
   font-size: 11px;
   font-weight: 600;
-  color: #9ca3af;
+  color: var(--light-gray);
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .stat-value {
   font-size: 18px;
   font-weight: 800;
-  color: #1f2937;
+  color: var(--dark-text);
+  font-family: 'Playfair Display', serif;
 }
-.stat-value.invertido { color: #C94F7C; }
+
+.stat-value.invertido { color: var(--secondary-pink); }
 .stat-value.deudas { color: #d97706; }
 
 /* ── PILLS FILTERS ── */
@@ -109,22 +138,32 @@
 .pill-btn {
   padding: 8px 16px;
   border-radius: 20px;
-  border: 1px solid #e5e7eb;
-  background: white;
+  border: 1.5px solid rgba(232,149,109,0.15);
+  background: var(--white);
   font-size: 13px;
-  color: #4b5563;
+  color: var(--dark-text);
   cursor: pointer;
   white-space: nowrap;
   font-family: 'Poppins', sans-serif;
   transition: all 0.2s;
 }
 
-.pill-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+.pill-btn:hover {
+  background: rgba(232,149,109,0.05);
+  border-color: var(--primary-salmon);
+}
+
 .pill-btn.active {
-  background: #1f2937;
+  background: linear-gradient(135deg, var(--primary-salmon), var(--secondary-pink));
   color: white;
-  border-color: #1f2937;
+  border-color: transparent;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(201,79,124,0.3);
+}
+
+.pill-btn:focus-visible {
+  outline: 2px solid var(--primary-salmon);
+  outline-offset: 2px;
 }
 
 /* ── TIMELINE CARDS ── */
@@ -135,21 +174,23 @@
 }
 
 .historial-card {
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--white);
+  border: 1.5px solid rgba(232,149,109,0.15);
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .historial-card:hover {
-  border-color: #E8956D;
-  box-shadow: 0 4px 12px rgba(232, 149, 109, 0.08);
+  border-color: var(--primary-salmon);
+  box-shadow: 0 4px 12px rgba(232,149,109,0.1);
+  transform: translateY(-1px);
 }
 
 .historial-card.expanded {
-  border-color: #E8956D;
+  border-color: var(--primary-salmon);
+  background: rgba(232,149,109,0.02);
 }
 
 .historial-card-summary {
@@ -167,13 +208,13 @@
 
 .historial-order-id {
   font-weight: 700;
-  color: #1f2937;
+  color: var(--dark-text);
   font-size: 14px;
 }
 
 .historial-date {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--light-gray);
 }
 
 .card-right-info {
@@ -184,8 +225,9 @@
 
 .historial-total {
   font-weight: 800;
-  color: #1f2937;
+  color: var(--dark-text);
   font-size: 14px;
+  font-family: 'Playfair Display', serif;
 }
 
 .historial-status-badge {
@@ -194,23 +236,25 @@
   padding: 4px 10px;
   border-radius: 20px;
   text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .historial-status-badge.entregado { background: #d1fae5; color: #065f46; }
-.historial-status-badge.en-camino { background: #fef3c7; color: #92400e; }
-.historial-status-badge.en-proceso { background: #e0f2fe; color: #0369a1; }
+.historial-status-badge.en-camino { background: #dbeafe; color: #1e40af; }
+.historial-status-badge.en-proceso { background: #fef3c7; color: #92400e; }
 .historial-status-badge.desconocido { background: #f3f4f6; color: #4b5563; }
 
 .chevron-icon {
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--light-gray);
   width: 12px;
+  transition: transform 0.2s ease;
 }
 
 /* ── EXPANDED DETAILS (ACORDEÓN) ── */
 .historial-card-details {
-  background: #fafafa;
-  border-top: 1px solid #f3f4f6;
+  background: rgba(253,246,240,0.3);
+  border-top: 1px solid rgba(232,149,109,0.1);
   padding: 16px;
   animation: slideDown 0.2s ease-out;
 }
@@ -224,8 +268,9 @@
   margin: 0 0 10px 0;
   font-size: 12px;
   text-transform: uppercase;
-  color: #6b7280;
+  color: var(--light-gray);
   letter-spacing: 0.04em;
+  font-weight: 600;
 }
 
 .detalles-productos-list {
@@ -239,7 +284,11 @@
   justify-content: space-between;
   align-items: center;
   font-size: 13px;
-  color: #374151;
+  color: var(--dark-text);
+  padding: 8px 12px;
+  background: var(--white);
+  border-radius: 8px;
+  border: 1px solid rgba(232,149,109,0.08);
 }
 
 .item-name {
@@ -248,18 +297,88 @@
 }
 
 .item-qty {
-  color: #6b7280;
+  color: var(--light-gray);
   font-weight: 600;
   margin: 0 20px;
 }
 
 .item-price {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--secondary-pink);
+  font-family: 'Playfair Display', serif;
 }
 
 .no-products-text {
   font-size: 13px;
-  color: #9ca3af;
+  color: var(--light-gray);
   margin: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .historial-modal {
+    max-width: 95vw;
+    max-height: 90vh;
+  }
+
+  .historial-stats-bar {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .historial-header {
+    padding: 16px;
+  }
+
+  .historial-header h2 {
+    font-size: 16px;
+  }
+
+  .historial-body {
+    padding: 16px;
+  }
+
+  .historial-card-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .card-right-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .historial-filter-pills {
+    gap: 6px;
+  }
+
+  .pill-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .historial-modal {
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .card-right-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .detalle-item-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .item-qty {
+    margin: 0;
+  }
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { getInfoSession } from '../../services/sessionService';
 import { logout } from '../../services/authService';
@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const info = getInfoSession();
@@ -22,20 +23,33 @@ export default function Dashboard() {
     } else {
       navigate('/login');
     }
-  }, [location.pathname]);
+  }, [location.pathname, navigate]);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
         setSidebarCollapsed(true);
+        setMobileSidebarOpen(false);
       } else {
         setSidebarCollapsed(false);
+        setMobileSidebarOpen(false);
       }
     };
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownOpen]);
 
   const handleLogout = () => {
     logout();
@@ -155,29 +169,26 @@ export default function Dashboard() {
             <div className="topbar-right">
               <button className="topbar-icon-btn" title="Mensajes">💬</button>
               <button className="topbar-icon-btn" title="Notificaciones">🔔</button>
-              <div className="avatar-wrapper">
+              <div className="avatar-wrapper" ref={dropdownRef}>
                 <div className="user-avatar" title={userInfo.nombre} onClick={() => setDropdownOpen(o => !o)}>
                   {getInitials()}
                 </div>
                 <span className="avatar-chevron" onClick={() => setDropdownOpen(o => !o)}>▾</span>
                 {dropdownOpen && (
-                  <>
-                    <div className="dropdown-backdrop" onClick={() => setDropdownOpen(false)} />
-                    <div className="avatar-dropdown">
-                      <div className="dropdown-header">
-                        <div className="dropdown-avatar">{getInitials()}</div>
-                        <div>
-                          <p className="dropdown-name">{userInfo.nombre}</p>
-                          <p className="dropdown-email">{userInfo.email}</p>
-                        </div>
+                  <div className="avatar-dropdown">
+                    <div className="dropdown-header">
+                      <div className="dropdown-avatar">{getInitials()}</div>
+                      <div>
+                        <p className="dropdown-name">{userInfo.nombre}</p>
+                        <p className="dropdown-email">{userInfo.email}</p>
                       </div>
-                      <hr className="dropdown-divider" />
-                      <button className="dropdown-item" onClick={() => { setDropdownOpen(false); navigate('/dashboard/mi-perfil'); }}> Mi perfil</button>
-                      <button className="dropdown-item" onClick={() => setDropdownOpen(false)}>️ Configuración</button>
-                      <hr className="dropdown-divider" />
-                      <button className="dropdown-item dropdown-logout" onClick={handleLogout}> Cerrar Sesión</button>
                     </div>
-                  </>
+                    <hr className="dropdown-divider" />
+                    <button className="dropdown-item" onClick={() => { setDropdownOpen(false); navigate('/dashboard/mi-perfil'); }}> Mi perfil</button>
+                    <button className="dropdown-item" onClick={() => setDropdownOpen(false)}>️ Configuración</button>
+                    <hr className="dropdown-divider" />
+                    <button className="dropdown-item dropdown-logout" onClick={handleLogout}> Cerrar Sesión</button>
+                  </div>
                 )}
               </div>
             </div>

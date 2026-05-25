@@ -243,7 +243,22 @@ body {
 }
 
 .sidebar-link.active::before {
-  height: 0;
+  height: 60%;
+  width: 4px;
+  left: -14px;
+}
+
+.sidebar-link.active::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255,255,255,0.6);
 }
 
 .sidebar-link.active:hover {

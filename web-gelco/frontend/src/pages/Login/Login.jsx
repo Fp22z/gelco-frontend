@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import { login as authLogin, saveToken, forgotPassword } from '../../services/authService';
 import { useToast } from '../../services/toastService.jsx';
 import './Login.css';
@@ -32,7 +33,7 @@ function ForgotPasswordModal({ onClose }) {
     }
   };
 
-  return (
+  return createPortal(
     <div className="auth-modal-overlay" onClick={onClose}>
       <div className="auth-modal" onClick={e => e.stopPropagation()}>
         <button className="auth-modal-close" onClick={onClose} aria-label="Cerrar">
@@ -77,7 +78,8 @@ function ForgotPasswordModal({ onClose }) {
           <button className="auth-btn-submit" onClick={onClose}>Entendido</button>
         </>)}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

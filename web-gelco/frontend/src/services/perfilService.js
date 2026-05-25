@@ -40,3 +40,16 @@ export const updateConsultora = async (consultoraId, datos) => {
   if (!res.ok) throw new Error('Error al actualizar consultora');
   return res.json();
 };
+
+export const actualizarFoto = async (usuarioId, file) => {
+  const formData = new FormData();
+  formData.append('foto', file);
+
+  const res = await fetch(`${environment.url}/usuarios/${usuarioId}/foto`, {
+    method: 'PUT',
+    headers: { 'Authorization': `Bearer ${getToken()}` },
+    body: formData
+  });
+  if (!res.ok) throw new Error('Error al subir la foto');
+  return res.json();
+};

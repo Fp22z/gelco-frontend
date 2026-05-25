@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { getMisPedidos, getPedidoById } from '../../../services/pedidoService.js';
 import { useToast } from '../../../services/toastService.jsx';
 import './Pedidos.css';
+import Modal from "../../../components/Modal/Modal.jsx";
 
 // ── Helpers ───────────────────────────────────────────────────────
 const AVATAR_COLORS = ['#E8956D','#C94F7C','#2563EB','#059669','#7C3AED','#D97706'];
@@ -59,8 +60,8 @@ function ModalDetalle({ pedidoId, onClose }) {
   }, [pedidoId]);
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-pedido" onClick={e => e.stopPropagation()}>
+    <Modal onClose={onClose} size="lg">
+      <div className="modal-pedido-inner">
         <div className="modal-pedido-header">
           <h3 className="modal-nombre">Detalle del Pedido #{pedidoId}</h3>
           <button className="btn-cerrar-icon" onClick={onClose}>✕</button>
@@ -125,7 +126,7 @@ function ModalDetalle({ pedidoId, onClose }) {
           </div>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }
 
@@ -205,37 +206,74 @@ export default function Pedidos() {
       </div>
 
       {/* ── STAT CARDS ── */}
-      <div className="pedidos-stats">
-        <div className="stat-card">
-          <div className="stat-icon pendiente">⏳</div>
-          <div className="stat-info">
-            <span className="stat-numero">{stats.pendientes}</span>
-            <span className="stat-label">Pendientes</span>
+      {loading ? (
+        <div className="pedidos-stats-skeleton">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="stat-card-skeleton">
+              <div className="skeleton-stat-icon" />
+              <div className="skeleton-stat-info">
+                <div className="skeleton-stat-number" />
+                <div className="skeleton-stat-label" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="pedidos-stats">
+          <div className="stat-card">
+            <div className="stat-icon pendiente">⏳</div>
+            <div className="stat-info">
+              <span className="stat-numero">{stats.pendientes}</span>
+              <span className="stat-label">Pendientes</span>
+            </div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon en-camino">🚚</div>
+            <div className="stat-info">
+              <span className="stat-numero">{stats.enCamino}</span>
+              <span className="stat-label">En Camino</span>
+            </div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon entregado">✅</div>
+            <div className="stat-info">
+              <span className="stat-numero">{stats.entregados}</span>
+              <span className="stat-label">Entregados</span>
+            </div>
+          </div>
+          <div className="stat-card total-venta-card">
+            <span className="stat-label-top">Total Vendido en Campaña</span>
+            <span className="stat-monto">{fmtMonto(stats.totalVenta)}</span>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon en-camino">🚚</div>
-          <div className="stat-info">
-            <span className="stat-numero">{stats.enCamino}</span>
-            <span className="stat-label">En Camino</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon entregado">✅</div>
-          <div className="stat-info">
-            <span className="stat-numero">{stats.entregados}</span>
-            <span className="stat-label">Entregados</span>
-          </div>
-        </div>
-        <div className="stat-card total-venta-card">
-          <span className="stat-label-top">Total Vendido en Campaña</span>
-          <span className="stat-monto">{fmtMonto(stats.totalVenta)}</span>
-        </div>
-      </div>
+      )}
 
       {/* ── TABLA ── */}
       <div className="pedidos-tabla-wrap">
-        {loading && <div className="pedidos-loading">Cargando pedidos...</div>}
+        {loading && (
+          <div className="pedidos-table-skeleton">
+            <div className="skeleton-table-header">
+              <div className="skeleton-th" style={{ flex: '0.5' }} />
+              <div className="skeleton-th" />
+              <div className="skeleton-th" style={{ flex: '0.7' }} />
+              <div className="skeleton-th" style={{ flex: '0.6' }} />
+              <div className="skeleton-th" />
+              <div className="skeleton-th" />
+              <div className="skeleton-th" style={{ flex: '0.7' }} />
+            </div>
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="skeleton-table-row">
+                <div className="skeleton-td" style={{ flex: '0.5' }} />
+                <div className="skeleton-td-avatar" />
+                <div className="skeleton-td" style={{ flex: '1.5' }} />
+                <div className="skeleton-td" style={{ flex: '0.7' }} />
+                <div className="skeleton-td" style={{ flex: '0.6' }} />
+                <div className="skeleton-td-badge" />
+                <div className="skeleton-td-btn" />
+              </div>
+            ))}
+          </div>
+        )}
 
         {!loading && pedidosFiltrados.length === 0 && (
           <div className="pedidos-empty">No se encontraron pedidos con esos filtros.</div>

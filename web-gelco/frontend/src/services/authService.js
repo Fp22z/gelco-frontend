@@ -78,3 +78,10 @@ export const resetPassword = async (data) => {
   }
   return response.json();
 };
+
+export const checkEmail = async (email) => {
+  const response = await fetch(`${environment.url}/auth/check-email?email=${encodeURIComponent(email)}`);
+  if (!response.ok) throw new Error('Error al verificar email');
+  const data = await response.json();
+  return data.exists;
+};

@@ -1,10 +1,19 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { register as authRegister, registerWithPhoto as authRegisterWithPhoto, saveToken } from '../../services/authService';
+import { register as authRegister, registerWithPhoto as authRegisterWithPhoto, saveToken, checkEmail as checkEmailExists } from '../../services/authService';
 import { useToast } from '../../services/toastService.jsx';
 import './Login.css';
 
-// ── Password strength ─────────────────────────────────────────────
+// ── Password validation ────────────────────────────────────────────
+function getPasswordChecks(pw) {
+  return [
+    { label: 'Mínimo 8 caracteres', passed: pw && pw.length >= 8 },
+    { label: 'Al menos una mayúscula', passed: pw && /[A-Z]/.test(pw) },
+    { label: 'Al menos un número', passed: pw && /[0-9]/.test(pw) },
+    { label: 'Al menos un carácter especial', passed: pw && /[^A-Za-z0-9]/.test(pw) },
+  ];
+}
+
 function getStrength(pw) {
   if (!pw) return { score: 0, label: '', color: '#e5e7eb' };
   let score = 0;
@@ -14,10 +23,10 @@ function getStrength(pw) {
   if (/[^A-Za-z0-9]/.test(pw)) score++;
   const map = [
     { label: '',          color: '#e5e7eb' },
-    { label: 'Debil',     color: '#ef4444' },
+    { label: 'Muy débil', color: '#ef4444' },
+    { label: 'Débil',     color: '#f59e0b' },
     { label: 'Regular',   color: '#f59e0b' },
     { label: 'Buena',     color: '#10b981' },
-    { label: 'Excelente', color: '#059669' },
   ];
   return { ...map[score], score };
 }
@@ -173,21 +182,41 @@ function PrivacyPolicyModal({ onClose }) {
 
 // ── Paso 1: Datos de cuenta + rol ─────────────────────────────────
 function Step1({ data, setData, onNext, onOpenTerms, onOpenPrivacy }) {
-  const [showPw, setShowPw]   = useState(false);
-  const [showPw2, setShowPw2] = useState(false);
-  const [errors, setErrors]   = useState({});
+  const [showPw, setShowPw]     = useState(false);
+  const [showPw2, setShowPw2]   = useState(false);
+  const [errors, setErrors]     = useState({});
+  const [emailChecking, setEmailChecking] = useState(false);
+  const [emailExists, setEmailExists]     = useState(false);
+  const emailCheckRef = useRef(null);
 
-  const strength  = useMemo(() => getStrength(data.password), [data.password]);
-  const pwMatch   = data.confirmar && data.password === data.confirmar;
-  const pwNoMatch = data.confirmar && data.password !== data.confirmar;
+  const strength       = useMemo(() => getStrength(data.password), [data.password]);
+  const passwordChecks = useMemo(() => getPasswordChecks(data.password), [data.password]);
+  const allChecksPassed = passwordChecks.every(c => c.passed);
+  const pwMatch     = data.confirmar && data.password === data.confirmar;
+  const pwNoMatch   = data.confirmar && data.password !== data.confirmar;
+  const isFormReady = data.nombre.trim() && data.email.trim() && /\S+@\S+\.\S+/.test(data.email)
+    && !emailChecking && !emailExists && data.password && allChecksPassed && data.confirmar && pwMatch && data.rol && data.terms;
+
+  const checkEmail = useCallback(async (email) => {
+    if (!email || !/\S+@\S+\.\S+/.test(email)) return;
+    setEmailChecking(true);
+    setEmailExists(false);
+    try {
+      const exists = await checkEmailExists(email);
+      setEmailExists(exists);
+    } catch {}
+    setEmailChecking(false);
+  }, []);
 
   const validate = () => {
     const e = {};
     if (!data.nombre.trim())    e.nombre   = 'Ingresa tu nombre completo';
     if (!data.email.trim())     e.email    = 'Ingresa tu correo';
     else if (!/\S+@\S+\.\S+/.test(data.email)) e.email = 'Correo invalido';
+    else if (emailChecking)     e.email    = 'Verificando correo...';
+    else if (emailExists)       e.email    = 'Este correo ya esta registrado';
     if (!data.password)         e.password = 'Ingresa una contrasenia';
-    else if (strength.score < 2) e.password = 'Elige una contrasenia mas segura';
+    else if (!allChecksPassed)  e.password = 'La contrasenia no cumple todos los requisitos';
     if (!data.confirmar)        e.confirmar = 'Confirma tu contrasenia';
     else if (data.password !== data.confirmar) e.confirmar = 'Las contrasenias no coinciden';
     if (!data.rol)              e.rol      = 'Elige un tipo de perfil';
@@ -202,7 +231,14 @@ function Step1({ data, setData, onNext, onOpenTerms, onOpenPrivacy }) {
     if (Object.keys(e2).length === 0) onNext();
   };
 
-  const f = (field) => (e) => { setData(d => ({ ...d, [field]: e.target.value })); setErrors(er => ({ ...er, [field]: '' })); };
+  const f = (field) => (e) => {
+    setData(d => ({ ...d, [field]: e.target.value }));
+    setErrors(er => ({ ...er, [field]: '' }));
+    if (field === 'email') {
+      if (emailCheckRef.current) clearTimeout(emailCheckRef.current);
+      emailCheckRef.current = setTimeout(() => checkEmail(e.target.value), 600);
+    }
+  };
 
   return (
     <>
@@ -228,12 +264,14 @@ function Step1({ data, setData, onNext, onOpenTerms, onOpenPrivacy }) {
         {/* Email */}
         <div className="auth-input-group">
           <label>Correo electronico</label>
-          <div className={`auth-input-wrap ${errors.email ? 'input-error' : ''}`}>
+          <div className={`auth-input-wrap ${errors.email || emailExists ? 'input-error' : ''}`}>
             <span className="auth-input-icon">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4a1 1 0 011-1h10a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1V4z" stroke="currentColor" strokeWidth="1.5"/><path d="M2 4l6 5 6-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             </span>
             <input type="email" placeholder="ejemplo@correo.com" value={data.email} onChange={f('email')} autoComplete="email" />
+            {emailChecking && <span className="auth-spinner" style={{ marginLeft: 8 }} />}
           </div>
+          {emailExists && !errors.email && <p className="auth-field-error">Este correo ya esta registrado</p>}
           {errors.email && <p className="auth-field-error">{errors.email}</p>}
         </div>
 
@@ -248,10 +286,20 @@ function Step1({ data, setData, onNext, onOpenTerms, onOpenPrivacy }) {
             <button type="button" className="auth-pw-toggle" onClick={() => setShowPw(v => !v)} tabIndex={-1}><EyeIcon open={showPw} /></button>
           </div>
           {data.password && (
-            <div className="pw-strength-wrap">
-              <div className="pw-strength-bar"><div className="pw-strength-fill" style={{ width: `${(strength.score/4)*100}%`, background: strength.color }} /></div>
-              <span className="pw-strength-label" style={{ color: strength.color }}>{strength.label}</span>
-            </div>
+            <>
+              <div className="pw-strength-wrap">
+                <div className="pw-strength-bar"><div className="pw-strength-fill" style={{ width: `${(strength.score/4)*100}%`, background: strength.color }} /></div>
+                <span className="pw-strength-label" style={{ color: strength.color }}>{strength.label}</span>
+              </div>
+              <div className="pw-checks">
+                {passwordChecks.map((check, i) => (
+                  <div key={i} className={`pw-check-item ${check.passed ? 'passed' : ''}`}>
+                    <span className="pw-check-icon">{check.passed ? '✓' : '·'}</span>
+                    <span>{check.label}</span>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
           {errors.password && <p className="auth-field-error">{errors.password}</p>}
         </div>
@@ -314,7 +362,7 @@ function Step1({ data, setData, onNext, onOpenTerms, onOpenPrivacy }) {
         </label>
         {errors.terms && <p className="auth-field-error">{errors.terms}</p>}
 
-        <button type="submit" className="auth-btn-submit">
+        <button type="submit" className="auth-btn-submit" disabled={!isFormReady}>
           Continuar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
       </form>

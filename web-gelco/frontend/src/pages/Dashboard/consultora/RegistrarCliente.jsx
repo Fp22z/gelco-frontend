@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { createCliente, updateCliente } from '../../../services/clienteService';
 import { useToast } from '../../../services/toastService.jsx';
 import './RegistrarCliente.css';
@@ -76,7 +77,7 @@ export default function RegistrarCliente({ cliente, onClose }) {
     }
   };
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={() => onClose(false)}>
       <div className="modal-box" onClick={e => e.stopPropagation()}>
 
@@ -143,6 +144,7 @@ export default function RegistrarCliente({ cliente, onClose }) {
         </div>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

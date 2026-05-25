@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { getMisPedidos } from '../../../services/pedidoService';
 import './HistorialPedidosCliente.css';
 
@@ -57,7 +58,7 @@ export default function HistorialPedidosCliente({ cliente, onClose }) {
     setPedidoExpandido(pedidoExpandido === id ? null : id);
   };
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="historial-modal" onClick={e => e.stopPropagation()}>
         
@@ -158,6 +159,7 @@ export default function HistorialPedidosCliente({ cliente, onClose }) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

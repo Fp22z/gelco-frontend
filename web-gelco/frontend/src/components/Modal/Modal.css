@@ -1,0 +1,61 @@
+/* ══════════════════════════════════════════════════════════
+   PORTAL MODAL — renderizado en document.body vía React Portal
+   Cubre siempre el viewport completo sin importar el contexto
+   de overflow del ancestro.
+   ══════════════════════════════════════════════════════════ */
+
+.portal-overlay {
+  /* Fijo al viewport, no al contenedor scroll */
+  position: fixed;
+  inset: 0;
+  /* Cubre cualquier sidebar, topbar o drawer */
+  z-index: 9999;
+  background: rgba(15, 10, 20, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: portalFadeIn 0.22s ease;
+}
+
+@keyframes portalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Contenedor del modal ── */
+.portal-modal {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.04),
+    0 24px 48px rgba(0,0,0,0.14),
+    0 0 0 1px rgba(232,149,109,0.1);
+  animation: portalSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  /* Scrollbar sutil */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(232,149,109,0.4) transparent;
+}
+
+.portal-modal::-webkit-scrollbar { width: 5px; }
+.portal-modal::-webkit-scrollbar-track { background: transparent; }
+.portal-modal::-webkit-scrollbar-thumb {
+  background: rgba(232,149,109,0.35);
+  border-radius: 3px;
+}
+
+@keyframes portalSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Tamaños ── */
+.portal-modal--sm { max-width: 380px; }   /* Confirmaciones, alertas */
+.portal-modal--md { max-width: 480px; }   /* Detalle producto, formularios simples */
+.portal-modal--lg { max-width: 580px; }   /* Detalle pedido con tabla */
