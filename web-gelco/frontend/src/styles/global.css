@@ -1,7 +1,7 @@
-/* 1. Importamos las fuentes elegantes que usas en el diseño */
+/* Importamos las fuentes elegantes que usas en el diseño */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* 2. Reseteo Básico */
+/* Reseteo Básico */
 *,
 *::before,
 *::after {
@@ -64,7 +64,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════
-   SKELETON LOADERS (compartidos)
+SKELETON LOADERS (compartidos)
    ══════════════════════════════════════════════════════════ */
 @keyframes skeletonShimmer {
   0% { background-position: 200% 0; }

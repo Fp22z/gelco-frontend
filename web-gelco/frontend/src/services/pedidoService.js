@@ -1,11 +1,11 @@
 import { environment } from '../environments/environment';
-import { getToken } from './authService'; // <-- Unificado para usar la misma función
+import { getToken } from './authService';
 
 const BASE = `${environment.url}/pedidos`;
 
 const authHeaders = () => ({
   'Content-Type': 'application/json',
-  'Authorization': `Bearer ${getToken()}` // <-- Actualizado
+  'Authorization': `Bearer ${getToken()}`
 });
 
 export const getMisPedidos = async () => {

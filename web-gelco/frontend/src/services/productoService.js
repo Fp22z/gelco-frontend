@@ -60,16 +60,6 @@ export const registrarProducto = async (data) => {
   }
 
   console.log('[Producto Service] Registrar producto:', data);
-  
-  // TODO: Implement full API call
-  // const response = await fetch(`${environment.url}/productos`, {
-  //   method: 'POST',
-  //   headers: {
-  //     'Authorization': `Bearer ${token}`,
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify(data),
-  // });
 };
 
 /**
@@ -85,16 +75,6 @@ export const actualizarProducto = async (data) => {
   }
 
   console.log('[Producto Service] Actualizar producto:', data);
-  
-  // TODO: Implement full API call
-  // const response = await fetch(`${environment.url}/productos/${data.id}`, {
-  //   method: 'PUT',
-  //   headers: {
-  //     'Authorization': `Bearer ${token}`,
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify(data),
-  // });
 };
 
 /**
@@ -110,13 +90,4 @@ export const eliminarProducto = async (id) => {
   }
 
   console.log('[Producto Service] Eliminar producto:', id);
-  
-  // TODO: Implement full API call
-  // const response = await fetch(`${environment.url}/productos/${id}`, {
-  //   method: 'DELETE',
-  //   headers: {
-  //     'Authorization': `Bearer ${token}`,
-  //     'Content-Type': 'application/json',
-  //   },
-  // });
 };

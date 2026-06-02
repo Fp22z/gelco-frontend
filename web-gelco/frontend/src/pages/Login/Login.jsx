@@ -106,7 +106,7 @@ export default function Login() {
       if (!rememberMe) {
         sessionStorage.setItem('session_only', 'true');
       }
-      showToast('¡Bienvenida de vuelta! 🌸', 'success');
+      showToast('¡Bienvenid@ de vuelta! 🌸', 'success');
       navigate('/dashboard');
     } catch (err) {
       showToast(err.message || 'Correo o contraseña incorrectos', 'danger');
