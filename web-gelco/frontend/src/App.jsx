@@ -22,6 +22,7 @@ import MisClientes from './pages/Dashboard/consultora/MisClientes';
 import OrdenCompra from './pages/Dashboard/consultora/OrdenCompra';
 import Flota from './pages/Dashboard/distribuidor/Flota';
 import Historial from './pages/Dashboard/distribuidor/Historial';
+import GestionConsultoras from './pages/Dashboard/rrhh/GestionConsultoras';
 import DashboardRRHH from './pages/Dashboard/rrhh/DashboardRRHH';
 import DashboardRecepcionista from './pages/Dashboard/recepcionista/DashboardRecepcionista';
 import DashboardFacturador from './pages/Dashboard/facturador/DashboardFacturador';
@@ -77,9 +78,9 @@ export default function App() {
 
               {/* Solo RECURSOS_HUMANOS */}
               <Route element={<RoleRoute allowedRoles={['RECURSOS_HUMANOS']} />}>
-                <Route path="gestion-consultoras" element={<DashboardRRHH />} />
+                <Route path="gestion-consultoras" element={<GestionConsultoras />} />
                 <Route path="capacitaciones-rrhh" element={<DashboardRRHH />} />
-                <Route path="estadisticas" element={<DashboardRRHH />} />
+                <Route path="estadisticas"        element={<DashboardRRHH />} />
               </Route>
 
               {/* Solo RECEPCIONISTA */}

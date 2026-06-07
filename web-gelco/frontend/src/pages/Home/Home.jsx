@@ -417,7 +417,6 @@ export default function Home() {
         </div>
         <div className="footer-bottom">
           <span>© 2026 GELCO · Todos los derechos reservados</span>
-          <span>Hecho con <span className="footer-heart">♥</span> en Perú</span>
         </div>
       </footer>
 
