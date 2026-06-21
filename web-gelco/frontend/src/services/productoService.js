@@ -1,93 +1,77 @@
 import { environment } from '../environments/environment';
 import { getToken } from './authService';
 
-/**
- * Get all productos without authentication (public endpoint)
- * Used for the public home page
- * @returns {Promise<Array>} Array of productos
- */
+const BASE = `${environment.url}/productos`;
+
+const authHeaders = () => ({
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${getToken()}`
+});
+
 export const getProductosPublic = async () => {
   const response = await fetch(`${environment.url}/productos`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
   });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch productos');
-  }
-
+  if (!response.ok) throw new Error('Failed to fetch productos');
   return response.json();
 };
 
-/**
- * Get all productos with authentication
- * @returns {Promise<Array>} Array of productos
- */
 export const getProductos = async () => {
-  const token = getToken();
-  
-  if (!token) {
-    throw new Error('No authentication token found');
-  }
+  const res = await fetch(`${BASE}`, { headers: authHeaders() });
+  if (!res.ok) throw new Error('Error al obtener productos');
+  return res.json();
+};
 
-  const response = await fetch(`${environment.url}/productos`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
+export const crearProducto = async (data) => {
+  const params = new URLSearchParams();
+  params.append('nombre', data.nombre);
+  if (data.descripcion) params.append('descripcion', data.descripcion);
+  params.append('precio', data.precio);
+  params.append('stock', data.stock || 0);
+  if (data.imagenUrl) params.append('imagenUrl', data.imagenUrl);
+
+  const res = await fetch(`${BASE}`, {
+    method: 'POST',
+    headers: authHeaders(),
+    body: params
   });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch productos');
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Error al crear producto');
   }
-
-  return response.json();
+  return res.json();
 };
 
-/**
- * Register a new producto (stub - not fully implemented yet)
- * @param {Object} data - Producto data
- * @returns {Promise<Object>}
- */
-export const registrarProducto = async (data) => {
-  const token = getToken();
-  
-  if (!token) {
-    throw new Error('No authentication token found');
-  }
+export const actualizarProducto = async (id, data) => {
+  const params = new URLSearchParams();
+  if (data.nombre) params.append('nombre', data.nombre);
+  if (data.descripcion) params.append('descripcion', data.descripcion);
+  if (data.precio) params.append('precio', data.precio);
+  if (data.stock !== undefined) params.append('stock', data.stock);
+  if (data.activo !== undefined) params.append('activo', data.activo);
+  if (data.imagenUrl) params.append('imagenUrl', data.imagenUrl);
 
-  console.log('[Producto Service] Registrar producto:', data);
+  const res = await fetch(`${BASE}/${id}`, {
+    method: 'PUT',
+    headers: authHeaders(),
+    body: params
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Error al actualizar producto');
+  }
+  return res.json();
 };
 
-/**
- * Update an existing producto (stub - not fully implemented yet)
- * @param {Object} data - Producto data with id
- * @returns {Promise<Object>}
- */
-export const actualizarProducto = async (data) => {
-  const token = getToken();
-  
-  if (!token) {
-    throw new Error('No authentication token found');
-  }
-
-  console.log('[Producto Service] Actualizar producto:', data);
-};
-
-/**
- * Delete a producto (stub - not fully implemented yet)
- * @param {number} id - Producto ID
- * @returns {Promise<void>}
- */
 export const eliminarProducto = async (id) => {
-  const token = getToken();
-  
-  if (!token) {
-    throw new Error('No authentication token found');
+  const res = await fetch(`${BASE}/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders()
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Error al eliminar producto');
   }
-
-  console.log('[Producto Service] Eliminar producto:', id);
+  return res.json();
 };

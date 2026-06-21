@@ -147,3 +147,13 @@ export const cancelarMiInscripcion = async (capacitacionId) => {
   }
   return res.json();
 };
+
+// ── Obtener efectividad de una capacitación
+export const getEfektividadByCapacitacion = async (capacitacionId) => {
+  const res = await fetch(`${BASE}/capacitaciones/${capacitacionId}/efectividad`, { headers: authHeaders() });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Error al obtener efectividad');
+  }
+  return res.json();
+};

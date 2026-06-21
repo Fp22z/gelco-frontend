@@ -89,10 +89,11 @@ export default function Dashboard() {
 
       case 'RECURSOS_HUMANOS':
         return [
-          { label: 'Panel de Control',       path: '/dashboard',                      icon: '📊' },
-          { label: 'Gestión Consultoras',    path: '/dashboard/gestion-consultoras',  icon: '👥' },
-          { label: 'Capacitaciones',         path: '/dashboard/capacitaciones-rrhh',  icon: '🎓' },
-          { label: 'Estadísticas de Ventas', path: '/dashboard/estadisticas',         icon: '📈' },
+          { label: 'Panel de Control',         path: '/dashboard',                        icon: '📊' },
+          { label: 'Gestión Consultoras',      path: '/dashboard/gestion-consultoras',    icon: '👥' },
+          { label: 'Capacitaciones',           path: '/dashboard/capacitaciones-rrhh',    icon: '🎓' },
+          { label: 'Medición de Efectividad', path: '/dashboard/efectividad-capacitaciones', icon: '📊' },
+          { label: 'Estadísticas de Ventas',   path: '/dashboard/estadisticas',           icon: '📈' },
         ];
 
       case 'RECEPCIONISTA':
