@@ -43,8 +43,8 @@ export default function CapacitacionesRRHH() {
   const [modalInscribir, setModalInscribir] = useState(null);
   const [modalConfirm, setModalConfirm] = useState(null);
 
-  const [form, setForm] = useState({ titulo: '', descripcion: '', fecha: '', duracionMinutos: '', tipo: '', urlContenido: '' });
-  const [editForm, setEditForm] = useState({ titulo: '', descripcion: '', fecha: '', duracionMinutos: '', tipo: '', urlContenido: '' });
+  const [form, setForm] = useState({ titulo: '', descripcion: '', fecha: '', duracionMinutos: '', tipo: '', urlContenido: '', preguntas: [] });
+  const [editForm, setEditForm] = useState({ titulo: '', descripcion: '', fecha: '', duracionMinutos: '', tipo: '', urlContenido: '', preguntas: [] });
   const [inscripcionForm, setInscripcionForm] = useState({ capacitacionId: '', consultoraId: '' });
   const [submitting, setSubmitting] = useState(false);
 
@@ -108,12 +108,13 @@ export default function CapacitacionesRRHH() {
         ...form,
         fecha: form.fecha ? new Date(form.fecha).toISOString() : null,
         duracionMinutos: form.duracionMinutos ? parseInt(form.duracionMinutos) : null,
-        activo: true
+        activo: true,
+        preguntas: form.preguntas.filter(p => p.pregunta.trim() !== '')
       };
       await crearCapacitacion(datos);
       show('Capacitación creada exitosamente', 'success');
       setModalNueva(false);
-      setForm({ titulo: '', descripcion: '', fecha: '', duracionMinutos: '', tipo: '', urlContenido: '' });
+      setForm({ titulo: '', descripcion: '', fecha: '', duracionMinutos: '', tipo: '', urlContenido: '', preguntas: [] });
       cargarDatos();
     } catch (err) {
       show(err.message || 'Error al crear', 'danger');
@@ -389,6 +390,43 @@ export default function CapacitacionesRRHH() {
                     value={form.urlContenido}
                     onChange={e => setForm({ ...form, urlContenido: e.target.value })}
                   />
+                </div>
+                <div className="cap-field">
+                  <label>Preguntas de evaluación</label>
+                  <p className="cap-field-hint">Agrega las preguntas que las consultoras deberán responder para completar la capacitación</p>
+                  {form.preguntas.map((preg, idx) => (
+                    <div key={idx} className="cap-pregunta-row">
+                      <span className="cap-pregunta-num">{idx + 1}.</span>
+                      <input
+                        type="text"
+                        placeholder={`Pregunta ${idx + 1}`}
+                        value={preg.pregunta}
+                        onChange={e => {
+                          const newPregs = [...form.preguntas];
+                          newPregs[idx].pregunta = e.target.value;
+                          setForm({ ...form, preguntas: newPregs });
+                        }}
+                        style={{ flex: 1 }}
+                      />
+                      <button
+                        type="button"
+                        className="cap-btn-remove"
+                        onClick={() => {
+                          const newPregs = form.preguntas.filter((_, i) => i !== idx);
+                          setForm({ ...form, preguntas: newPregs });
+                        }}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    className="cap-btn-add-pregunta"
+                    onClick={() => setForm({ ...form, preguntas: [...form.preguntas, { pregunta: '', orden: form.preguntas.length + 1 }] })}
+                  >
+                    ➕ Agregar pregunta
+                  </button>
                 </div>
               </div>
               <div className="cap-modal-footer">

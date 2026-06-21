@@ -22,10 +22,24 @@ export const getCapacitacionesByConsultora = async (consultoraId) => {
   return res.json();
 };
 
+// ── Obtener mis capacitaciones (deriva consultoraId del JWT)
+export const getMisCapacitaciones = async () => {
+  const res = await fetch(`${BASE}/capacitaciones/mis-capacitaciones`, { headers: authHeaders() });
+  if (!res.ok) throw new Error('Error al obtener mis capacitaciones');
+  return res.json();
+};
+
 // ── Obtener consultoras inscritas en una capacitación
 export const getConsultorasByCapacitacion = async (capacitacionId) => {
   const res = await fetch(`${BASE}/capacitaciones/${capacitacionId}/consultoras`, { headers: authHeaders() });
   if (!res.ok) throw new Error('Error al obtener consultoras');
+  return res.json();
+};
+
+// ── Obtener preguntas de evaluación de una capacitación
+export const getPreguntasByCapacitacion = async (capacitacionId) => {
+  const res = await fetch(`${BASE}/capacitaciones/${capacitacionId}/preguntas`, { headers: authHeaders() });
+  if (!res.ok) throw new Error('Error al obtener preguntas');
   return res.json();
 };
 
@@ -67,7 +81,7 @@ export const eliminarCapacitacion = async (id) => {
   return res.json();
 };
 
-// ── Inscribir consultora en capacitación
+// ── Inscribir consultora en capacitación (con consultoraId)
 export const inscribirConsultora = async (capacitacionId, consultoraId) => {
   const params = new URLSearchParams();
   params.append('capacitacionId', capacitacionId);
@@ -79,6 +93,19 @@ export const inscribirConsultora = async (capacitacionId, consultoraId) => {
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al inscribir');
+  }
+  return res.json();
+};
+
+// ── Auto-inscribirse (deriva consultoraId del JWT)
+export const inscribirse = async (capacitacionId) => {
+  const res = await fetch(`${BASE}/capacitaciones/${capacitacionId}/inscribirse`, {
+    method: 'POST',
+    headers: authHeaders()
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Error al inscribirse');
   }
   return res.json();
 };
@@ -105,5 +132,18 @@ export const eliminarInscripcion = async (inscripcionId) => {
     headers: authHeaders()
   });
   if (!res.ok) throw new Error('Error al eliminar inscripción');
+  return res.json();
+};
+
+// ── Cancelar mi inscripción (deriva consultoraId del JWT)
+export const cancelarMiInscripcion = async (capacitacionId) => {
+  const res = await fetch(`${BASE}/capacitaciones/${capacitacionId}/cancelar`, {
+    method: 'DELETE',
+    headers: authHeaders()
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Error al cancelar inscripción');
+  }
   return res.json();
 };

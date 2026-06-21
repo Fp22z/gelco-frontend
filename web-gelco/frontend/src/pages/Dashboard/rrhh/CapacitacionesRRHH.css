@@ -700,3 +700,64 @@
   .cap-modal-footer { padding: 16px 20px; flex-direction: column; }
   .cap-btn-cancel, .cap-btn-submit, .cap-btn-danger { width: 100%; justify-content: center; }
 }
+
+.cap-field-hint {
+  font-size: 12px;
+  color: var(--light-gray);
+  margin: 4px 0 12px;
+  font-weight: 400;
+}
+
+.cap-pregunta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.cap-pregunta-num {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-salmon);
+  min-width: 24px;
+}
+
+.cap-btn-remove {
+  width: 32px;
+  height: 32px;
+  background: rgba(239, 68, 68, 0.1);
+  border: none;
+  border-radius: 6px;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cap-btn-remove:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.cap-btn-add-pregunta {
+  width: 100%;
+  padding: 10px;
+  background: rgba(232, 149, 109, 0.08);
+  border: 1.5px dashed rgba(232, 149, 109, 0.4);
+  border-radius: 8px;
+  color: var(--primary-salmon);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.cap-btn-add-pregunta:hover {
+  background: rgba(232, 149, 109, 0.15);
+  border-color: var(--primary-salmon);
+}
