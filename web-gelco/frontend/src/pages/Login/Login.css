@@ -1102,10 +1102,10 @@ body {
 
 /* ── Modal base ──────────────────────────────────────────── */
 .auth-modal-overlay {
-  position: fixed;
+  position: fixed !important;
   inset: 0;
   background: rgba(0,0,0,0.55);
-  z-index: 500;
+  z-index: 9999 !important;
   display: flex;
   align-items: center;
   justify-content: center;

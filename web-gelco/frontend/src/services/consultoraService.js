@@ -29,7 +29,8 @@ export const registrarConsultora = async (datos) => {
   formData.append('email',     datos.email);
   formData.append('password',  datos.password);
   formData.append('perfil',    'CONSULTORA');
-  formData.append('dni',       datos.dni);
+  formData.append('nivel',      datos.nivel || 'Bronce');
+  formData.append('dni',        datos.dni);
   formData.append('telefono',  datos.telefono);
   if (datos.direccion) formData.append('direccion', datos.direccion);
 

@@ -24,6 +24,8 @@ import Flota from './pages/Dashboard/distribuidor/Flota';
 import Historial from './pages/Dashboard/distribuidor/Historial';
 import GestionConsultoras from './pages/Dashboard/rrhh/GestionConsultoras';
 import DashboardRRHH from './pages/Dashboard/rrhh/DashboardRRHH';
+import CapacitacionesRRHH from './pages/Dashboard/rrhh/CapacitacionesRRHH';
+import EstadisticasVentas from './pages/Dashboard/rrhh/EstadisticasVentas';
 import DashboardRecepcionista from './pages/Dashboard/recepcionista/DashboardRecepcionista';
 import DashboardFacturador from './pages/Dashboard/facturador/DashboardFacturador';
 import DashboardDespacho from './pages/Dashboard/despacho/DashboardDespacho';
@@ -79,8 +81,8 @@ export default function App() {
               {/* Solo RECURSOS_HUMANOS */}
               <Route element={<RoleRoute allowedRoles={['RECURSOS_HUMANOS']} />}>
                 <Route path="gestion-consultoras" element={<GestionConsultoras />} />
-                <Route path="capacitaciones-rrhh" element={<DashboardRRHH />} />
-                <Route path="estadisticas"        element={<DashboardRRHH />} />
+                <Route path="capacitaciones-rrhh" element={<CapacitacionesRRHH />} />
+                <Route path="estadisticas"        element={<EstadisticasVentas />} />
               </Route>
 
               {/* Solo RECEPCIONISTA */}

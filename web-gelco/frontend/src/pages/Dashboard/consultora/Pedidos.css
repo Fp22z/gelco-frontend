@@ -346,11 +346,11 @@
 
 /* ── MODAL DETALLE (Estilo Catálogo) ── */
 .modal-overlay {
-  position: fixed;
+  position: fixed !important;
   inset: 0;
-  background: rgba(31, 41, 55, 0.6); /* Ligeramente más suave */
-  backdrop-filter: blur(6px); /* Blur un poco más marcado */
-  z-index: 1000;
+  background: rgba(31, 41, 55, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 9999 !important;
   display: flex;
   align-items: center;
   justify-content: center;

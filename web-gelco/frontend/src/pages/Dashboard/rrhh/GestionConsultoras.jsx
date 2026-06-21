@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import {
   getConsultoras,
   registrarConsultora,
@@ -30,14 +31,14 @@ function getPasswordChecks(pw) {
 }
 
 function getStrength(pw) {
-  if (!pw) return { score: 0, label: '', color: '#e5e7eb' };
+  if (!pw) return { score: 0, label: 'Vacía', color: '#e5e7eb' };
   let score = 0;
   if (pw.length >= 8)           score++;
   if (/[A-Z]/.test(pw))         score++;
   if (/[0-9]/.test(pw))         score++;
   if (/[^A-Za-z0-9]/.test(pw))  score++;
   const map = [
-    { label: '',           color: '#e5e7eb' },
+    { label: 'Vacía',      color: '#e5e7eb' },
     { label: 'Muy débil',  color: '#ef4444' },
     { label: 'Débil',      color: '#f59e0b' },
     { label: 'Regular',    color: '#f59e0b' },
@@ -66,6 +67,29 @@ export default function GestionConsultoras() {
 
   // ── Carga inicial ─────────────────────────────────────────
   useEffect(() => { cargarConsultoras(); }, []);
+
+  // ── Tecla Escape para cerrar modales ───────────────────────
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key !== 'Escape') return;
+      if (modalNueva)       { setModalNueva(false); setForm(initForm); setShowPw(false); }
+      if (modalDetalle)     setModalDetalle(null);
+      if (modalEditar)      setModalEditar(null);
+      if (modalConfirm)     setModalConfirm(null);
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [modalNueva, modalDetalle, modalEditar, modalConfirm]);
+
+  const cerrarModalNueva = useCallback(() => {
+    setModalNueva(false);
+    setForm(initForm);
+    setShowPw(false);
+  }, []);
+
+  const cerrarModalDetalle = useCallback(() => setModalDetalle(null), []);
+  const cerrarModalEditar = useCallback(() => setModalEditar(null), []);
+  const cerrarModalConfirm = useCallback(() => setModalConfirm(null), []);
 
   const cargarConsultoras = async () => {
     try {
@@ -118,9 +142,7 @@ export default function GestionConsultoras() {
       setSubmitting(true);
       await registrarConsultora(form);
       show(`Consultora ${form.nombre} registrada exitosamente`, 'success');
-      setModalNueva(false);
-      setForm(initForm);
-      setShowPw(false);
+      cerrarModalNueva();
       cargarConsultoras();
     } catch (err) {
       show(err.message || 'Error al registrar consultora', 'danger');
@@ -142,6 +164,10 @@ export default function GestionConsultoras() {
 
   const handleEditar = async (e) => {
     e.preventDefault();
+    if (!NIVELES.includes(editForm.nivel)) {
+      show('Nivel inválido. Seleccione Bronce, Plata u Oro.', 'warning');
+      return;
+    }
     setSubmitting(true);
     try {
       await actualizarConsultora(modalEditar.id, editForm);
@@ -164,13 +190,13 @@ export default function GestionConsultoras() {
   const handleToggle = async () => {
     const { consultora, accion } = modalConfirm;
     const estaActiva = consultora.estadoUsuario !== false;
-    setModalConfirm(null);
     try {
       await toggleEstadoConsultora(consultora.usuarioId);
       setConsultoras(prev =>
         prev.map(c => c.id === consultora.id ? { ...c, estadoUsuario: !estaActiva } : c)
       );
       show(`Consultora ${!estaActiva ? 'activada' : 'desactivada'} correctamente`, 'success');
+      setModalConfirm(null);
       cargarConsultoras();
     } catch {
       show(`No se pudo ${accion} la consultora`, 'danger');
@@ -327,7 +353,7 @@ export default function GestionConsultoras() {
                   </td>
                   <td>
                     <div className="gc-acciones">
-                      <button className="gc-btn-accion gc-btn-ver" title="Ver detalle" onClick={() => setModalDetalle(c)}>👁️</button>
+                      <button className="gc-btn-accion gc-btn-ver" title="Ver detalle" onClick={() => { setModalDetalle(c); }}>👁️</button>
                       <button className="gc-btn-accion gc-btn-editar" title="Editar" onClick={() => abrirEditar(c)}>✏️</button>
                       <button
                         className={`gc-btn-accion ${c.estadoUsuario !== false ? 'gc-btn-toggle-on' : 'gc-btn-toggle-off'}`}
@@ -346,15 +372,15 @@ export default function GestionConsultoras() {
       </div>
 
       {/* ── MODAL NUEVA CONSULTORA ──────────────────────── */}
-      {modalNueva && (
-        <div className="gc-modal-overlay" onClick={() => { setModalNueva(false); setForm(initForm); setShowPw(false); }}>
+      {modalNueva && createPortal((
+        <div className="gc-modal-overlay" onClick={cerrarModalNueva}>
           <div className="gc-modal" onClick={e => e.stopPropagation()}>
             <div className="gc-modal-header">
               <div>
                 <h3>Registrar Consultora</h3>
                 <p>Crea el acceso y perfil de la nueva consultora</p>
               </div>
-              <button className="gc-modal-close" onClick={() => { setModalNueva(false); setForm(initForm); setShowPw(false); }}>✕</button>
+              <button className="gc-modal-close" onClick={cerrarModalNueva}>✕</button>
             </div>
             <form onSubmit={handleRegistrar} autoComplete="off">
               <div className="gc-modal-body">
@@ -464,7 +490,7 @@ export default function GestionConsultoras() {
 
               </div>
               <div className="gc-modal-footer">
-                <button type="button" className="gc-btn-cancel" onClick={() => { setModalNueva(false); setForm(initForm); setShowPw(false); }}>
+                <button type="button" className="gc-btn-cancel" onClick={cerrarModalNueva}>
                   Cancelar
                 </button>
                 <button type="submit" className="gc-btn-submit" disabled={submitting}>
@@ -474,18 +500,18 @@ export default function GestionConsultoras() {
             </form>
           </div>
         </div>
-      )}
+      ), document.body)}
 
       {/* ── MODAL EDITAR ───────────────────────────────── */}
-      {modalEditar && (
-        <div className="gc-modal-overlay" onClick={() => setModalEditar(null)}>
+      {modalEditar && createPortal((
+        <div className="gc-modal-overlay" onClick={cerrarModalEditar}>
           <div className="gc-modal" onClick={e => e.stopPropagation()}>
             <div className="gc-modal-header">
               <div>
                 <h3>Editar Consultora</h3>
                 <p>{modalEditar.usuarioNombre}</p>
               </div>
-              <button className="gc-modal-close" onClick={() => setModalEditar(null)}>✕</button>
+              <button className="gc-modal-close" onClick={cerrarModalEditar}>✕</button>
             </div>
             <form onSubmit={handleEditar}>
               <div className="gc-modal-body">
@@ -527,7 +553,7 @@ export default function GestionConsultoras() {
                 </div>
               </div>
               <div className="gc-modal-footer">
-                <button type="button" className="gc-btn-cancel" onClick={() => setModalEditar(null)}>
+                <button type="button" className="gc-btn-cancel" onClick={cerrarModalEditar}>
                   Cancelar
                 </button>
                 <button type="submit" className="gc-btn-submit" disabled={submitting}>
@@ -537,18 +563,18 @@ export default function GestionConsultoras() {
             </form>
           </div>
         </div>
-      )}
+      ), document.body)}
 
       {/* ── MODAL DETALLE ──────────────────────────────── */}
-      {modalDetalle && (
-        <div className="gc-modal-overlay" onClick={() => setModalDetalle(null)}>
+      {modalDetalle && createPortal((
+        <div className="gc-modal-overlay" onClick={cerrarModalDetalle}>
           <div className="gc-modal" onClick={e => e.stopPropagation()}>
             <div className="gc-modal-header">
               <div>
                 <h3>Detalle de Consultora</h3>
                 <p>Información completa del perfil</p>
               </div>
-              <button className="gc-modal-close" onClick={() => setModalDetalle(null)}>✕</button>
+              <button className="gc-modal-close" onClick={cerrarModalDetalle}>✕</button>
             </div>
             <div className="gc-modal-body">
               <div className="gc-detalle-avatar">{iniciales(modalDetalle.usuarioNombre)}</div>
@@ -563,23 +589,23 @@ export default function GestionConsultoras() {
               </div>
             </div>
             <div className="gc-modal-footer">
-              <button className="gc-btn-cancel" onClick={() => setModalDetalle(null)}>Cerrar</button>
+              <button className="gc-btn-cancel" onClick={cerrarModalDetalle}>Cerrar</button>
               <button className="gc-btn-submit" onClick={() => { setModalDetalle(null); abrirEditar(modalDetalle); }}>✏️ Editar</button>
             </div>
           </div>
         </div>
-      )}
+      ), document.body)}
 
       {/* ── MODAL CONFIRMACIÓN TOGGLE ──────────────────── */}
-      {modalConfirm && (
-        <div className="gc-modal-overlay" onClick={() => setModalConfirm(null)}>
-          <div className="gc-modal" style={{ maxWidth: '420px' }} onClick={e => e.stopPropagation()}>
+      {modalConfirm && createPortal((
+        <div className="gc-modal-overlay" onClick={cerrarModalConfirm}>
+          <div className="gc-modal gc-modal-sm" onClick={e => e.stopPropagation()}>
             <div className="gc-modal-header">
               <div>
                 <h3>{modalConfirm.accion === 'desactivar' ? '⚠️ Desactivar' : '✅ Activar'} consultora</h3>
                 <p>{modalConfirm.consultora.usuarioNombre}</p>
               </div>
-              <button className="gc-modal-close" onClick={() => setModalConfirm(null)}>✕</button>
+              <button className="gc-modal-close" onClick={cerrarModalConfirm}>✕</button>
             </div>
             <div className="gc-modal-body">
               <p style={{ fontSize: '14px', color: 'var(--dark-text)', lineHeight: '1.6', margin: 0 }}>
@@ -590,7 +616,7 @@ export default function GestionConsultoras() {
               </p>
             </div>
             <div className="gc-modal-footer">
-              <button className="gc-btn-cancel" onClick={() => setModalConfirm(null)}>Cancelar</button>
+              <button className="gc-btn-cancel" onClick={cerrarModalConfirm}>Cancelar</button>
               <button
                 className="gc-btn-submit"
                 style={modalConfirm.accion === 'desactivar'
@@ -604,7 +630,7 @@ export default function GestionConsultoras() {
             </div>
           </div>
         </div>
-      )}
+      ), document.body)}
 
     </div>
   );

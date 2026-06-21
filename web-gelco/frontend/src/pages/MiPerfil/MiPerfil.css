@@ -469,7 +469,7 @@
    MODAL DE ÉXITO
 ──────────────────────────────────────────── */
 .saved-overlay {
-  position: fixed;
+  position: fixed !important;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(6px);
@@ -477,7 +477,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 9999 !important;
   animation: savedOverlayIn 0.25s ease;
 }
 
