@@ -284,7 +284,7 @@ export default function DashboardRecepcionista() {
       {/* KPIs */}
       <div className="rec-kpis">
         <div className="rec-kpi-card">
-          <div className="rec-kpi-icon">¼</div>
+          <div className="rec-kpi-icon">↩️</div>
           <div className="rec-kpi-content">
             <span className="rec-kpi-label">Total Procesadas</span>
             <span className="rec-kpi-value">{totalDevoluciones}</span>

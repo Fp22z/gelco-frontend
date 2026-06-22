@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { getInventarioResumen, getProductosMasVendidos, getSugerenciasReposicion, getTodosProductos } from '../../../services/inventarioService';
+import { getInventarioResumen, getProductosMasVendidos, getSugerenciasReposicion, getTodosProductos, getMovimientos } from '../../../services/inventarioService';
 import { crearProducto, actualizarProducto, eliminarProducto } from '../../../services/productoService';
 import { getCategorias } from '../../../services/CategoriaService';
 import { useToast } from '../../../services/toastService';
@@ -163,6 +163,7 @@ export default function Inventario() {
   const [productos, setProductos] = useState([]);
   const [masVendidos, setMasVendidos] = useState([]);
   const [sugerencias, setSugerencias] = useState([]);
+  const [movimientos, setMovimientos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('productos');
@@ -173,16 +174,18 @@ export default function Inventario() {
 
   const cargarDatos = async () => {
     try {
-      const [resumenData, productosData, masVendidosData, sugerenciasData] = await Promise.all([
+      const [resumenData, productosData, masVendidosData, sugerenciasData, movimientosData] = await Promise.all([
         getInventarioResumen(),
         getTodosProductos(),
         getProductosMasVendidos(10),
-        getSugerenciasReposicion()
+        getSugerenciasReposicion(),
+        getMovimientos()
       ]);
       setResumen(resumenData);
       setProductos(Array.isArray(productosData) ? productosData : []);
       setMasVendidos(Array.isArray(masVendidosData) ? masVendidosData : []);
       setSugerencias(Array.isArray(sugerenciasData) ? sugerenciasData : []);
+      setMovimientos(Array.isArray(movimientosData) ? movimientosData : []);
 
       try {
         const categoriasData = await getCategorias();
@@ -301,6 +304,9 @@ export default function Inventario() {
         </button>
         <button className={`inv-tab ${activeTab === 'sugerencias' ? 'active' : ''}`} onClick={() => setActiveTab('sugerencias')}>
           Sugerencias ({sugerencias.length})
+        </button>
+        <button className={`inv-tab ${activeTab === 'movimientos' ? 'active' : ''}`} onClick={() => setActiveTab('movimientos')}>
+          Movimientos ({movimientos.length})
         </button>
       </div>
 
@@ -487,6 +493,49 @@ export default function Inventario() {
                   </button>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'movimientos' && (
+        <div className="inv-card">
+          <h3>Historial de Movimientos</h3>
+          {movimientos.length === 0 ? (
+            <div className="inv-empty">No hay movimientos registrados</div>
+          ) : (
+            <div className="inv-table-wrap">
+              <table className="inv-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Producto</th>
+                    <th>Tipo</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {movimientos.map(m => (
+                    <tr key={m.id}>
+                      <td>#{m.id}</td>
+                      <td className="inv-producto-nombre">{m.productoNombre}</td>
+                      <td>
+                        <span className={`inv-status-badge ${m.tipo === 'DEVOLUCION' ? 'bajo' : 'normal'}`}>
+                          {m.tipo}
+                        </span>
+                      </td>
+                      <td>+{m.cantidad}</td>
+                      <td style={{ fontSize: '12px', color: 'var(--light-gray)' }}>
+                        {new Date(m.fecha).toLocaleDateString('es-PE', {
+                          day: '2-digit', month: 'short', year: 'numeric',
+                          hour: '2-digit', minute: '2-digit'
+                        })}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>

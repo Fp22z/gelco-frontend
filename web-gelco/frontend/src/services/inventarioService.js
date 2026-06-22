@@ -52,3 +52,12 @@ export const getSugerenciasReposicion = async () => {
   }
   return res.json();
 };
+
+export const getMovimientos = async () => {
+  const res = await fetch(`${BASE}/inventario/movimientos`, { headers: authHeaders() });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Error al obtener movimientos');
+  }
+  return res.json();
+};
