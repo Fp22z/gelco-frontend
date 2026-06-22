@@ -258,6 +258,7 @@
   color: var(--light-gray);
 }
 
+/* MODIFICADO: Añadido line-clamp estándar para compatibilidad */
 .cap-card-desc {
   font-size: 13px;
   color: var(--light-gray);
@@ -265,6 +266,7 @@
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2; 
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
