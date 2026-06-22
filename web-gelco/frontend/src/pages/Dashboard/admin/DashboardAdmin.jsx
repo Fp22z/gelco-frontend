@@ -22,7 +22,7 @@ export default function DashboardAdmin() {
 
     Promise.allSettled([
       fetch(`${environment.url}/home`, { headers }).then(r => r.json()),
-      fetch(`${environment.url}/pedidos/mis-pedidos`, { headers }).then(r => r.json()),
+      fetch(`${environment.url}/pedidos`, { headers }).then(r => r.json()),
       fetch(`${environment.url}/usuarios`, { headers }).then(r => r.json()),
     ]).then(([homeRes, pedidosRes, usuariosRes]) => {
       const home = homeRes.status === 'fulfilled' ? homeRes.value : null;
