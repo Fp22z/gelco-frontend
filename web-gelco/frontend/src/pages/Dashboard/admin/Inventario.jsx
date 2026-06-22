@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { getInventarioResumen, getProductosMasVendidos, getSugerenciasReposicion, getTodosProductos } from '../../../services/inventarioService';
 import { crearProducto, actualizarProducto, eliminarProducto } from '../../../services/productoService';
+import { getCategorias } from '../../../services/CategoriaService';
 import { useToast } from '../../../services/toastService';
 import './Inventario.css';
 
@@ -18,13 +19,14 @@ function getStockStatus(stock, activo) {
   return { label: 'Normal', cls: 'normal', color: '#22c55e' };
 }
 
-function ProductoModal({ producto, onSave, onClose, onDelete }) {
+function ProductoModal({ producto, categorias, onSave, onClose, onDelete }) {
   const { show } = useToast();
   const [form, setForm] = useState({
     nombre: producto?.nombre || '',
     descripcion: producto?.descripcion || '',
     precio: producto?.precio || '',
     stock: producto?.stock ?? '',
+    categoriaId: producto?.categoriaId || '',
     activo: producto?.activo ?? true,
     imagenUrl: producto?.imagenUrl || ''
   });
@@ -112,6 +114,18 @@ function ProductoModal({ producto, onSave, onClose, onDelete }) {
               placeholder="https://..."
             />
           </div>
+          <div className="inv-form-group">
+            <label>Categoría</label>
+            <select
+              value={form.categoriaId}
+              onChange={e => setForm({ ...form, categoriaId: e.target.value ? parseInt(e.target.value) : null })}
+            >
+              <option value="">Sin categoría</option>
+              {categorias.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+              ))}
+            </select>
+          </div>
           {producto && (
             <div className="inv-form-group">
               <label className="inv-checkbox-label">
@@ -149,24 +163,28 @@ export default function Inventario() {
   const [productos, setProductos] = useState([]);
   const [masVendidos, setMasVendidos] = useState([]);
   const [sugerencias, setSugerencias] = useState([]);
+  const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('productos');
   const [modalProducto, setModalProducto] = useState(null);
   const [filtroStock, setFiltroStock] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
+  const [editingStock, setEditingStock] = useState({});
 
   const cargarDatos = async () => {
     try {
-      const [resumenData, productosData, masVendidosData, sugerenciasData] = await Promise.all([
+      const [resumenData, productosData, masVendidosData, sugerenciasData, categoriasData] = await Promise.all([
         getInventarioResumen(),
         getTodosProductos(),
         getProductosMasVendidos(10),
-        getSugerenciasReposicion()
+        getSugerenciasReposicion(),
+        getCategorias()
       ]);
       setResumen(resumenData);
       setProductos(Array.isArray(productosData) ? productosData : []);
       setMasVendidos(Array.isArray(masVendidosData) ? masVendidosData : []);
       setSugerencias(Array.isArray(sugerenciasData) ? sugerenciasData : []);
+      setCategorias(Array.isArray(categoriasData) ? categoriasData : []);
     } catch {
       show('Error al cargar datos', 'danger');
     } finally {
@@ -348,14 +366,24 @@ export default function Inventario() {
                             type="number"
                             min="0"
                             className="inv-stock-input"
-                            value={p.stock}
-                            onChange={async (e) => {
+                            value={editingStock[p.id] !== undefined ? editingStock[p.id] : p.stock}
+                            onChange={(e) => setEditingStock(prev => ({ ...prev, [p.id]: parseInt(e.target.value) || 0 }))}
+                            onBlur={async (e) => {
                               const newStock = parseInt(e.target.value) || 0;
-                              try {
-                                await actualizarProducto(p.id, { stock: newStock });
-                                cargarDatos();
-                              } catch {
-                                show('Error al actualizar stock', 'danger');
+                              if (newStock !== p.stock) {
+                                try {
+                                  await actualizarProducto(p.id, { stock: newStock });
+                                  setEditingStock(prev => {
+                                    const next = { ...prev };
+                                    delete next[p.id];
+                                    return next;
+                                  });
+                                  await cargarDatos();
+                                  show('Stock actualizado', 'success');
+                                } catch (err) {
+                                  show(err.message || 'Error al actualizar stock', 'danger');
+                                  setEditingStock(prev => ({ ...prev, [p.id]: p.stock }));
+                                }
                               }
                             }}
                           />
@@ -461,6 +489,7 @@ export default function Inventario() {
       {modalProducto !== null && (
         <ProductoModal
           producto={modalProducto.id ? modalProducto : null}
+          categorias={categorias}
           onSave={handleGuardarProducto}
           onClose={() => setModalProducto(null)}
           onDelete={handleEliminarProducto}

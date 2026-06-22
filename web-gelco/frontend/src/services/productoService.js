@@ -30,10 +30,14 @@ export const crearProducto = async (data) => {
   params.append('precio', data.precio);
   params.append('stock', data.stock || 0);
   if (data.imagenUrl) params.append('imagenUrl', data.imagenUrl);
+  if (data.categoriaId) params.append('categoriaId', data.categoriaId);
 
   const res = await fetch(`${BASE}`, {
     method: 'POST',
-    headers: authHeaders(),
+    headers: {
+      'Authorization': `Bearer ${getToken()}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
     body: params
   });
   if (!res.ok) {
@@ -51,17 +55,27 @@ export const actualizarProducto = async (id, data) => {
   if (data.stock !== undefined) params.append('stock', data.stock);
   if (data.activo !== undefined) params.append('activo', data.activo);
   if (data.imagenUrl) params.append('imagenUrl', data.imagenUrl);
+  if (data.categoriaId) params.append('categoriaId', data.categoriaId);
+
+  console.log('[actualizarProducto] PUT', `${BASE}/${id}`, Object.fromEntries(params));
 
   const res = await fetch(`${BASE}/${id}`, {
     method: 'PUT',
-    headers: authHeaders(),
+    headers: {
+      'Authorization': `Bearer ${getToken()}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
     body: params
   });
+  console.log('[actualizarProducto] Response:', res.status, res.ok);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
+    console.error('[actualizarProducto] Error:', err);
     throw new Error(err.message || 'Error al actualizar producto');
   }
-  return res.json();
+  const json = await res.json();
+  console.log('[actualizarProducto] Result:', json);
+  return json;
 };
 
 export const eliminarProducto = async (id) => {
@@ -73,5 +87,5 @@ export const eliminarProducto = async (id) => {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al eliminar producto');
   }
-  return res.json();
+  return { success: true };
 };
