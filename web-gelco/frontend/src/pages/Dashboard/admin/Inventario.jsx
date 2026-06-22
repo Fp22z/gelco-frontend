@@ -173,18 +173,24 @@ export default function Inventario() {
 
   const cargarDatos = async () => {
     try {
-      const [resumenData, productosData, masVendidosData, sugerenciasData, categoriasData] = await Promise.all([
+      const [resumenData, productosData, masVendidosData, sugerenciasData] = await Promise.all([
         getInventarioResumen(),
         getTodosProductos(),
         getProductosMasVendidos(10),
-        getSugerenciasReposicion(),
-        getCategorias()
+        getSugerenciasReposicion()
       ]);
       setResumen(resumenData);
       setProductos(Array.isArray(productosData) ? productosData : []);
       setMasVendidos(Array.isArray(masVendidosData) ? masVendidosData : []);
       setSugerencias(Array.isArray(sugerenciasData) ? sugerenciasData : []);
-      setCategorias(Array.isArray(categoriasData) ? categoriasData : []);
+
+      try {
+        const categoriasData = await getCategorias();
+        setCategorias(Array.isArray(categoriasData) ? categoriasData : []);
+      } catch {
+        console.warn('No se pudieron cargar las categorías');
+        setCategorias([]);
+      }
     } catch {
       show('Error al cargar datos', 'danger');
     } finally {
