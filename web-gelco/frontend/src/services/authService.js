@@ -48,7 +48,11 @@ export const registerWithPhoto = async (data) => {
 };
 
 export const saveToken = (token) => { localStorage.setItem('user_token', token); };
-export const logout = () => { localStorage.removeItem('user_token'); };
+export const saveRefreshToken = (token) => { localStorage.setItem('refresh_token', token); };
+export const logout = () => {
+  localStorage.removeItem('user_token');
+  localStorage.removeItem('refresh_token');
+};
 export const isLoggedIn = () => { return !!localStorage.getItem('user_token'); };
 export const getToken = () => { return localStorage.getItem('user_token'); };
 export const updateToken = (nuevoToken) => { localStorage.setItem('user_token', nuevoToken); };

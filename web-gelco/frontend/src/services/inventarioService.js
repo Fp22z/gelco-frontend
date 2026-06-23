@@ -1,15 +1,10 @@
 import { environment } from '../environments/environment';
-import { getToken } from './authService';
+import { httpClient } from './httpClient';
 
-const BASE = `${environment.url}/productos`;
-
-const authHeaders = () => ({
-  'Content-Type': 'application/json',
-  'Authorization': `Bearer ${getToken()}`
-});
+const BASE = `/productos`;
 
 export const getInventarioResumen = async () => {
-  const res = await fetch(`${BASE}/inventario/resumen`, { headers: authHeaders() });
+  const res = await httpClient.get(`${BASE}/inventario/resumen`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al obtener resumen de inventario');
@@ -18,7 +13,7 @@ export const getInventarioResumen = async () => {
 };
 
 export const getProductosStockBajo = async () => {
-  const res = await fetch(`${BASE}/inventario/alertas`, { headers: authHeaders() });
+  const res = await httpClient.get(`${BASE}/inventario/alertas`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al obtener alertas');
@@ -27,7 +22,7 @@ export const getProductosStockBajo = async () => {
 };
 
 export const getTodosProductos = async () => {
-  const res = await fetch(`${BASE}`, { headers: authHeaders() });
+  const res = await httpClient.get(`${BASE}`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al obtener productos');
@@ -36,7 +31,7 @@ export const getTodosProductos = async () => {
 };
 
 export const getProductosMasVendidos = async (limit = 10) => {
-  const res = await fetch(`${BASE}/renovacion/mas-vendidos?limit=${limit}`, { headers: authHeaders() });
+  const res = await httpClient.get(`${BASE}/renovacion/mas-vendidos?limit=${limit}`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al obtener productos mas vendidos');
@@ -45,7 +40,7 @@ export const getProductosMasVendidos = async (limit = 10) => {
 };
 
 export const getSugerenciasReposicion = async () => {
-  const res = await fetch(`${BASE}/renovacion/sugerencias`, { headers: authHeaders() });
+  const res = await httpClient.get(`${BASE}/renovacion/sugerencias`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al obtener sugerencias');
@@ -54,7 +49,7 @@ export const getSugerenciasReposicion = async () => {
 };
 
 export const getMovimientos = async () => {
-  const res = await fetch(`${BASE}/inventario/movimientos`, { headers: authHeaders() });
+  const res = await httpClient.get(`/productos/inventario/movimientos`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al obtener movimientos');

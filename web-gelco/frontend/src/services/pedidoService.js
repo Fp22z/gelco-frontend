@@ -1,31 +1,21 @@
-import { environment } from '../environments/environment';
-import { getToken } from './authService';
+import { httpClient } from './httpClient';
 
-const BASE = `${environment.url}/pedidos`;
-
-const authHeaders = () => ({
-  'Content-Type': 'application/json',
-  'Authorization': `Bearer ${getToken()}`
-});
+const BASE = `/pedidos`;
 
 export const getMisPedidos = async () => {
-  const res = await fetch(`${BASE}/mis-pedidos`, { headers: authHeaders() });
+  const res = await httpClient.get(`${BASE}/mis-pedidos`);
   if (!res.ok) throw new Error('Error al obtener pedidos');
   return res.json();
 };
 
 export const getPedidoById = async (id) => {
-  const res = await fetch(`${BASE}/${id}`, { headers: authHeaders() });
+  const res = await httpClient.get(`${BASE}/${id}`);
   if (!res.ok) throw new Error('Error al obtener pedido');
   return res.json();
 };
 
 export const crearPedido = async (clienteId, items) => {
-  const res = await fetch(BASE, {
-    method: 'POST',
-    headers: authHeaders(),
-    body: JSON.stringify({ clienteId, items })
-  });
+  const res = await httpClient.post(BASE, { clienteId, items });
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || 'Error al crear pedido');
@@ -34,10 +24,7 @@ export const crearPedido = async (clienteId, items) => {
 };
 
 export const updateEstadoPedido = async (id, estado) => {
-  const res = await fetch(`${BASE}/${id}/estado?estado=${encodeURIComponent(estado)}`, {
-    method: 'PUT',
-    headers: authHeaders()
-  });
+  const res = await httpClient.put(`${BASE}/${id}/estado?estado=${encodeURIComponent(estado)}`);
   if (!res.ok) throw new Error('Error al actualizar estado');
   return res.json();
 };

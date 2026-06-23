@@ -178,15 +178,6 @@ export default function Capacitaciones() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="cap-loading">
-        <div className="loading-spinner" />
-        <p>Cargando capacitaciones...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="cap-page">
       <div className="cap-header">

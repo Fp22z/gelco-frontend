@@ -104,12 +104,7 @@ export default function DashboardRecepcionista() {
       {/* Actividad reciente */}
       <div className="rec-card">
         <h3>Actividad reciente</h3>
-        {loading ? (
-          <div className="rec-loading">
-            <div className="loading-spinner" />
-            <p>Cargando...</p>
-          </div>
-        ) : recientes.length === 0 ? (
+        {recientes.length === 0 ? (
           <div className="rec-empty">No hay devoluciones registradas aún</div>
         ) : (
           <div className="rec-table-wrap" style={{ padding: 0 }}>

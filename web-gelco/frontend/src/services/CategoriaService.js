@@ -1,16 +1,7 @@
-import { environment } from '../environments/environment';
-import { getToken } from './authService';
-
-const BASE = `${environment.url}/categorias`;
+import { httpClient } from './httpClient';
 
 export const getCategorias = async () => {
-  const res = await fetch(`${BASE}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${getToken()}`
-    }
-  });
+  const res = await httpClient.get(`/categorias`);
   if (!res.ok) throw new Error('Error al obtener categorías');
   return res.json();
 };

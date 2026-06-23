@@ -1,15 +1,9 @@
-import { environment } from '../environments/environment';
-import { getToken } from './authService';
+import { httpClient } from './httpClient';
 
-const BASE = `${environment.url}/productos`;
-
-const authHeaders = () => ({
-  'Content-Type': 'application/json',
-  'Authorization': `Bearer ${getToken()}`
-});
+const BASE = `/productos`;
 
 export const getProductosPublic = async () => {
-  const response = await fetch(`${environment.url}/productos`, {
+  const response = await fetch(`http://localhost:8080/api/v1/productos`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -18,7 +12,7 @@ export const getProductosPublic = async () => {
 };
 
 export const getProductos = async () => {
-  const res = await fetch(`${BASE}`, { headers: authHeaders() });
+  const res = await httpClient.get(BASE);
   if (!res.ok) throw new Error('Error al obtener productos');
   return res.json();
 };
@@ -32,14 +26,7 @@ export const crearProducto = async (data) => {
   if (data.imagenUrl) params.append('imagenUrl', data.imagenUrl);
   if (data.categoriaId) params.append('categoriaId', data.categoriaId);
 
-  const res = await fetch(`${BASE}`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${getToken()}`,
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: params
-  });
+  const res = await httpClient.post(`${BASE}?${params.toString()}`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al crear producto');
@@ -57,32 +44,16 @@ export const actualizarProducto = async (id, data) => {
   if (data.imagenUrl) params.append('imagenUrl', data.imagenUrl);
   if (data.categoriaId) params.append('categoriaId', data.categoriaId);
 
-  console.log('[actualizarProducto] PUT', `${BASE}/${id}`, Object.fromEntries(params));
-
-  const res = await fetch(`${BASE}/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': `Bearer ${getToken()}`,
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: params
-  });
-  console.log('[actualizarProducto] Response:', res.status, res.ok);
+  const res = await httpClient.put(`${BASE}/${id}?${params.toString()}`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    console.error('[actualizarProducto] Error:', err);
     throw new Error(err.message || 'Error al actualizar producto');
   }
-  const json = await res.json();
-  console.log('[actualizarProducto] Result:', json);
-  return json;
+  return res.json();
 };
 
 export const eliminarProducto = async (id) => {
-  const res = await fetch(`${BASE}/${id}`, {
-    method: 'DELETE',
-    headers: authHeaders()
-  });
+  const res = await httpClient.delete(`${BASE}/${id}`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al eliminar producto');

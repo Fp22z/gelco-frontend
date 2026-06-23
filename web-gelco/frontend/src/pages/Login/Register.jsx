@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { register as authRegister, registerWithPhoto as authRegisterWithPhoto, saveToken, checkEmail as checkEmailExists } from '../../services/authService';
+// 1. SE AGREGÓ 'saveRefreshToken' AL IMPORT DE ABAJO:
+import { register as authRegister, registerWithPhoto as authRegisterWithPhoto, saveToken, saveRefreshToken, checkEmail as checkEmailExists } from '../../services/authService';
 import { useToast } from '../../services/toastService.jsx';
 import './Login.css';
 
@@ -172,7 +173,7 @@ function PrivacyPolicyModal({ onClose }) {
 
         <div className="terms-actions">
           <button className="auth-btn-submit" style={{ flex: 1 }} disabled={!scrolled} onClick={onClose}>
-            {scrolled ? 'Entendido' : 'Lee la politica primero'}
+            Lee la politica primero
           </button>
         </div>
       </div>
@@ -537,7 +538,11 @@ export default function Register() {
         foto:     data.foto,
       };
       const response = data.foto ? await authRegisterWithPhoto(payload) : await authRegister(payload);
+      
+      // 2. CAMBIOS AQUÍ (SE AGREGÓ LA LÍNEA DEL REFRESH TOKEN):
       saveToken(response.token);
+      saveRefreshToken(response.refreshToken); // ← NUEVO
+      
       showToast('¡Cuenta creada con exito! Bienvenida 🌸', 'success');
       navigate('/dashboard');
     } catch (err) {

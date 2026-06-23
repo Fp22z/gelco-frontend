@@ -90,17 +90,6 @@ export default function EstadisticasVentas() {
     return colors[hash % colors.length];
   };
 
-  if (loading) {
-    return (
-      <div className="est-page">
-        <div className="est-loading">
-          <div className="loading-spinner" />
-          <p>Cargando estadísticas...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="est-page">
       <div className="est-header">

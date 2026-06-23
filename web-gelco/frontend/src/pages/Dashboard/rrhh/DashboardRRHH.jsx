@@ -90,15 +90,6 @@ export default function DashboardRRHH() {
     return 'nivel-bronce';
   };
 
-  if (loading) {
-    return (
-      <div className="dashboard-rrhh-loading">
-        <div className="loading-spinner" />
-        <p>Cargando panel de RRHH...</p>
-      </div>
-    );
-  }
-
   const iniciales = session?.nombre
     ? session.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
     : 'RR';

@@ -55,17 +55,6 @@ export default function EfektividadCapacitaciones() {
       .finally(() => setLoadingEf(false));
   }, [selectedId]);
 
-  if (loading) {
-    return (
-      <div className="efk-page">
-        <div className="efk-loading">
-          <div className="loading-spinner" />
-          <p>Cargando...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="efk-page">
       <div className="efk-header">

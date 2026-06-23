@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { createPortal } from 'react-dom';
-import { login as authLogin, saveToken, forgotPassword } from '../../services/authService';
+import { login as authLogin, saveToken, saveRefreshToken, forgotPassword } from '../../services/authService';
 import { useToast } from '../../services/toastService.jsx';
 import './Login.css';
 
@@ -103,6 +103,7 @@ export default function Login() {
     try {
       const response = await authLogin({ email, password });
       saveToken(response.token);
+      saveRefreshToken(response.refreshToken);
       if (!rememberMe) {
         sessionStorage.setItem('session_only', 'true');
       }

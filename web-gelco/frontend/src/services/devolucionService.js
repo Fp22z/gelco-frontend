@@ -1,38 +1,28 @@
-import { environment } from '../environments/environment';
-import { getToken } from './authService';
+import { httpClient } from './httpClient';
 
-const BASE = `${environment.url}/devoluciones`;
-const PEDIDOS_BASE = `${environment.url}/pedidos`;
-
-const authHeaders = () => ({
-  'Content-Type': 'application/json',
-  'Authorization': `Bearer ${getToken()}`
-});
+const BASE = `/devoluciones`;
+const PEDIDOS_BASE = `/pedidos`;
 
 export const getPedidosEntregados = async () => {
-  const res = await fetch(`${PEDIDOS_BASE}/estado/Entregado`, { headers: authHeaders() });
+  const res = await httpClient.get(`${PEDIDOS_BASE}/estado/Entregado`);
   if (!res.ok) throw new Error('Error al obtener pedidos entregados');
   return res.json();
 };
 
 export const getPedidoById = async (id) => {
-  const res = await fetch(`${PEDIDOS_BASE}/${id}`, { headers: authHeaders() });
+  const res = await httpClient.get(`${PEDIDOS_BASE}/${id}`);
   if (!res.ok) throw new Error('Pedido no encontrado');
   return res.json();
 };
 
 export const getDisponibleParaDevolucion = async (detallePedidoId) => {
-  const res = await fetch(`${BASE}/detalle/${detallePedidoId}/disponible`, { headers: authHeaders() });
+  const res = await httpClient.get(`${BASE}/detalle/${detallePedidoId}/disponible`);
   if (!res.ok) throw new Error('Error al obtener disponible');
-  return res.json(); // { disponible: N }
+  return res.json();
 };
 
 export const crearDevolucion = async ({ detallePedidoId, cantidad, tipo, motivo, condicionProducto, observaciones }) => {
-  const res = await fetch(BASE, {
-    method: 'POST',
-    headers: authHeaders(),
-    body: JSON.stringify({ detallePedidoId, cantidad, tipo, motivo, condicionProducto, observaciones })
-  });
+  const res = await httpClient.post(BASE, { detallePedidoId, cantidad, tipo, motivo, condicionProducto, observaciones });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || 'Error al registrar devolución');
@@ -41,13 +31,13 @@ export const crearDevolucion = async ({ detallePedidoId, cantidad, tipo, motivo,
 };
 
 export const getDevoluciones = async () => {
-  const res = await fetch(BASE, { headers: authHeaders() });
+  const res = await httpClient.get(BASE);
   if (!res.ok) throw new Error('Error al obtener historial de devoluciones');
   return res.json();
 };
 
 export const getDevolucionesByDetalle = async (detallePedidoId) => {
-  const res = await fetch(`${BASE}/detalle/${detallePedidoId}`, { headers: authHeaders() });
+  const res = await httpClient.get(`${BASE}/detalle/${detallePedidoId}`);
   if (!res.ok) throw new Error('Error al obtener devoluciones del ítem');
   return res.json();
 };

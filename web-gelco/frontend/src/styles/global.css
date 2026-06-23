@@ -113,3 +113,32 @@ SKELETON LOADERS (compartidos)
 .skeleton-circle-sm { width: 38px; height: 38px; }
 .skeleton-circle-md { width: 52px; height: 52px; }
 .skeleton-circle-lg { width: 72px; height: 72px; }
+
+#global-spinner {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+#global-spinner.visible {
+  display: flex;
+}
+.gs-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+}
+.gs-circle {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(232, 149, 109, 0.2);
+  border-top-color: #E8956D;
+  border-radius: 50%;
+  animation: gs-spin 0.7s linear infinite;
+}
+@keyframes gs-spin {
+  to { transform: rotate(360deg); }
+}

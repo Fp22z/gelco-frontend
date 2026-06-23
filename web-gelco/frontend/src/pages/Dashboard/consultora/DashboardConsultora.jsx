@@ -60,15 +60,6 @@ export default function DashboardConsultora() {
     }).finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '400px', gap: '12px', color: '#6b7280' }}>
-        <div className="loading-spinner" />
-        Cargando tu panel...
-      </div>
-    );
-  }
-
   const ventasTotales = Number(homeData?.ventasTotales || 0);
   const nivel = homeData?.nivel || 'Sin nivel';
   const meta = nivel === 'Oro' ? 5000 : nivel === 'Plata' ? 2000 : 1000;

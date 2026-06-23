@@ -241,16 +241,6 @@ export default function Inventario() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="inv-page">
-        <div className="inv-loading">
-          <div className="loading-spinner" />
-          <p>Cargando inventario...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="inv-page">

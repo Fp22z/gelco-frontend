@@ -224,17 +224,6 @@ export default function CapacitacionesRRHH() {
     setInscripcionForm({ capacitacionId: cap.id, consultoraId: '' });
   };
 
-  if (loading) {
-    return (
-      <div className="cap-rrhh-page">
-        <div className="cap-rrhh-loading">
-          <div className="loading-spinner" />
-          <p>Cargando capacitaciones...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="cap-rrhh-page">
       <div className="cap-rrhh-header">
