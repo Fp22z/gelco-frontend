@@ -28,6 +28,7 @@ import CapacitacionesRRHH from './pages/Dashboard/rrhh/CapacitacionesRRHH';
 import EstadisticasVentas from './pages/Dashboard/rrhh/EstadisticasVentas';
 import EfektividadCapacitaciones from './pages/Dashboard/rrhh/EfektividadCapacitaciones';
 import DashboardRecepcionista from './pages/Dashboard/recepcionista/DashboardRecepcionista';
+import Devoluciones from './pages/Dashboard/recepcionista/Devoluciones';
 import DashboardFacturador from './pages/Dashboard/facturador/DashboardFacturador';
 import DashboardDespacho from './pages/Dashboard/despacho/DashboardDespacho';
 
@@ -89,7 +90,7 @@ export default function App() {
 
               {/* Solo RECEPCIONISTA */}
               <Route element={<RoleRoute allowedRoles={['RECEPCIONISTA']} />}>
-                <Route path="devoluciones" element={<DashboardRecepcionista />} />
+                <Route path="devoluciones" element={<Devoluciones />} />
               </Route>
 
               {/* Solo FACTURADOR */}
